@@ -1,17 +1,17 @@
 import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { GridOptions } from '@ag-grid-community/core';
 import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
   AdaptableOptions,
-  HandleFdc3IntentContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
-import { TickerData, rowData } from './rowData';
+import { rowData, TickerData } from './rowData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
+import { InstrumentContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
@@ -104,10 +104,10 @@ export const AdaptableAgGrid = () => {
               },
             ],
           },
+          listensFor: ['ViewInstrument'],
         },
         customIntents: {
           raises: {
-            // TODO AFL: currently not possible because we can't handle IntentResults
             // GetPrice: [
             //   {
             //     contextType: 'fdc3.instrument',
@@ -141,12 +141,16 @@ export const AdaptableAgGrid = () => {
               },
             },
           },
+          listensFor: ['fdc3.instrument'],
         },
-        handleIntent: (context) => {
-          console.log(`Received intent: ${context.intent}`, context.context);
+        handleIntent: (eventInfo) => {
+          console.log(
+            `Received intent: ${eventInfo.intent}`,
+            eventInfo.context,
+          );
         },
-        handleContext: (context) => {
-          console.log(`Received context: `, context);
+        handleContext: (eventInfo) => {
+          console.log(`Received context: `, eventInfo);
         },
       },
       actionColumnOptions: {
