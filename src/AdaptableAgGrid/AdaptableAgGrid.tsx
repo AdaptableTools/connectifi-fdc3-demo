@@ -172,6 +172,7 @@ export const AdaptableAgGrid = () => {
                 fdc3Api
                   .raiseIntentFromRow(rowNode, 'GetPrice', 'fdc3.instrument')
                   .then((result: any) => {
+                    console.log('GetPrice result: ', result);
                     priceMap.set(ticker, result?.price);
                   });
               },
