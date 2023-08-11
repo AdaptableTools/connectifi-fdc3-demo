@@ -8,40 +8,37 @@ import AdaptableReact, {
   AdaptableOptions,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
-import { Car, rowData } from './rowData';
+import { TickerData, rowData } from './rowData';
 import { agGridModules } from './agGridModules';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 export const AdaptableAgGrid = () => {
-  const gridOptions = useMemo<GridOptions<Car>>(
+  const gridOptions = useMemo<GridOptions<TickerData>>(
     () => ({
       defaultColDef,
       columnDefs,
       rowData,
-      sideBar: true,
-
+      sideBar: 'adaptable',
       suppressMenuHide: true,
       enableRangeSelection: true,
       enableCharts: true,
     }),
     [],
   );
-  const adaptableOptions = useMemo<AdaptableOptions<Car>>(
+  const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
       licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
-      primaryKey: 'id',
-      userName: 'Test User',
-      adaptableId: 'Adaptable React Poc',
-      adaptableStateKey: 'adaptable_react_poc',
+      primaryKey: 'Symbol',
+      userName: 'AdaptableUser',
+      adaptableId: 'AdaptableConnectifiPoc',
+      adaptableStateKey: 'adaptable_connectifi_poc',
       predefinedConfig: {
+        Theme: {
+          CurrentTheme: 'dark',
+        },
         Dashboard: {
-          Tabs: [
-            {
-              Name: 'Welcome',
-              Toolbars: ['Layout'],
-            },
-          ],
+          DashboardTitle: 'Adaptable - Connectifi',
         },
       },
     }),

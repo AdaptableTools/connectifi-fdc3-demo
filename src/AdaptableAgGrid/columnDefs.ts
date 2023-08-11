@@ -1,5 +1,5 @@
 import { ColDef } from '@ag-grid-community/core';
-import { Car } from './rowData';
+import { TickerData } from './rowData';
 
 export const defaultColDef: ColDef = {
   editable: true,
@@ -8,35 +8,30 @@ export const defaultColDef: ColDef = {
   floatingFilter: true,
 };
 
-export const columnDefs: ColDef<Car>[] = [
+export const columnDefs: ColDef<TickerData>[] = [
   {
-    colId: 'id',
-    hide: true,
-    suppressColumnsToolPanel: true,
-    suppressFiltersToolPanel: true,
-    type: 'abColDefNumber',
-  },
-  {
-    headerName: 'Auto Make',
-    field: 'make',
-
+    headerName: 'Company Name',
+    field: 'Name',
     type: 'abColDefString',
   },
   {
-    headerName: 'Model',
-    field: 'model',
-
+    headerName: 'Sector',
+    field: 'Sector',
     type: 'abColDefString',
   },
   {
-    headerName: 'Price',
-    field: 'price',
-
-    type: 'abColDefNumber',
+    headerName: 'Ticker',
+    field: 'Symbol',
+    type: 'abColDefString',
   },
   {
-    headerName: 'Date manufactured',
-    field: 'date',
-    type: 'abColDefDate',
+    headerName: 'Contact',
+    field: 'Contact',
+    type: 'abColDefString',
+  },
+  {
+    headerName: 'Email',
+    field: 'Email',
+    type: 'abColDefString',
   },
 ];
