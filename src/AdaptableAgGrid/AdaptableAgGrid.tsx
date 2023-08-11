@@ -136,8 +136,10 @@ export const AdaptableAgGrid = () => {
                 handleIntentResolution: async (
                   params: HandleFdc3IntentResolutionContext,
                 ) => {
+                  console.log('handleIntentResolution', params);
                   const intentResult =
                     await params.intentResolution.getResult();
+                  console.log('intentResult', intentResult);
                   if (!intentResult?.type) {
                     return;
                   }
