@@ -6,11 +6,13 @@ import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
   AdaptableOptions,
+  HandleFdc3IntentResolutionContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData, TickerData } from './rowData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
+import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
@@ -110,29 +112,44 @@ export const AdaptableAgGrid = () => {
         },
         customIntents: {
           raises: {
-            // GetPrice: [
-            //   {
-            //     contextType: 'fdc3.instrument',
-            //     actionColumn: {
-            //       columnId: 'fdc3GetPriceColumn',
-            //       friendlyName: 'FDC3: Get Price Info',
-            //       button: {
-            //         id: 'GetPriceButton',
-            //         label: 'Get Price Info',
-            //         icon: {
-            //           name: 'quote',
-            //         },
-            //         tooltip: (button, context) => {
-            //           return `Get Price Info for ${context.rowData.Name}`;
-            //         },
-            //         buttonStyle: {
-            //           tone: 'info',
-            //           variant: 'outlined',
-            //         },
-            //       },
-            //     },
-            //   },
-            // ],
+            GetPrice: [
+              {
+                contextType: 'fdc3.instrument',
+                actionColumn: {
+                  columnId: 'fdc3GetPriceColumn',
+                  friendlyName: 'FDC3: Get Price Info',
+                  button: {
+                    id: 'GetPriceButton',
+                    label: 'Get Price Info',
+                    icon: {
+                      name: 'quote',
+                    },
+                    tooltip: (button, context) => {
+                      return `Get Price Info for ${context.rowData.Name}`;
+                    },
+                    buttonStyle: {
+                      tone: 'info',
+                      variant: 'outlined',
+                    },
+                  },
+                },
+                handleIntentResolution: async (
+                  params: HandleFdc3IntentResolutionContext,
+                ) => {
+                  const intentResult =
+                    await params.intentResolution.getResult();
+                  if (!intentResult?.type) {
+                    return;
+                  }
+                  const contextData = intentResult as Fdc3CustomContext;
+                  const ticker = contextData.id?.ticker;
+                  const price = contextData.price;
+                  if (ticker) {
+                    priceMap.set(ticker, price);
+                  }
+                },
+              },
+            ],
           },
         },
         contexts: {
@@ -154,44 +171,6 @@ export const AdaptableAgGrid = () => {
         handleContext: (eventInfo) => {
           console.log(`Received context: `, eventInfo);
         },
-      },
-      actionColumnOptions: {
-        actionColumns: [
-          {
-            columnId: 'fdc3GetPriceColumn',
-            friendlyName: 'FDC3: Get Price Info',
-            actionColumnButton: {
-              label: (button, context) => {
-                const priceInfo = priceMap.get(context.data.Symbol);
-                return priceInfo ? `${priceInfo}` : 'Get Price Info';
-              },
-              onClick: (button, context) => {
-                const fdc3Api = context.adaptableApi.fdc3Api;
-                const { rowNode, data } = context;
-                const ticker = data.Symbol;
-                fdc3Api
-                  .raiseIntentFromRow(rowNode, 'GetPrice', 'fdc3.instrument')
-                  .then((result: any) => {
-                    console.log('GetPrice result: ', result);
-                    priceMap.set(ticker, result?.price);
-                  });
-              },
-              icon: {
-                name: 'quote',
-              },
-              tooltip: (button, context) => {
-                return `Get Price Info for ${context.data.Name}`;
-              },
-              buttonStyle: (button, context) => {
-                const priceInfo = priceMap.get(context.data.Symbol);
-                return {
-                  tone: priceInfo ? 'success' : 'info',
-                  variant: 'outlined',
-                };
-              },
-            },
-          },
-        ],
       },
       predefinedConfig: {
         Theme: {
