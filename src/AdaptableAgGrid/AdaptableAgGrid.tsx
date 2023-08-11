@@ -11,13 +11,12 @@ import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData, TickerData } from './rowData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
-import { InstrumentContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 1;
+const Revision = 2;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
@@ -54,6 +53,9 @@ export const AdaptableAgGrid = () => {
       userName: 'AdaptableUser',
       adaptableId: 'AdaptableConnectifiPoc',
       adaptableStateKey: 'adaptable_connectifi_poc',
+      layoutOptions: {
+        autoSizeColumnsInLayout: true,
+      },
       fdc3Options: {
         enableFdc3: true,
         enableLogging: true,
