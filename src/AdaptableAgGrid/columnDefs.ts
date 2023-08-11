@@ -24,14 +24,14 @@ export const columnDefs: ColDef<TickerData>[] = [
     field: 'Symbol',
     type: 'abColDefString',
   },
-  {
-    headerName: 'Contact',
-    field: 'Contact',
-    type: 'abColDefString',
-  },
-  {
-    headerName: 'Email',
-    field: 'Email',
-    type: 'abColDefString',
-  },
+  // {
+  //   headerName: 'Contact',
+  //   field: 'Contact',
+  //   type: 'abColDefString',
+  // },
+  // {
+  //   headerName: 'Email',
+  //   field: 'Email',
+  //   type: 'abColDefString',
+  // },
 ];
