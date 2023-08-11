@@ -17,6 +17,8 @@ const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
+const Revision = 1;
+
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
 
@@ -65,14 +67,6 @@ export const AdaptableAgGrid = () => {
         },
         intents: {
           raises: {
-            ViewInstrument: [
-              {
-                contextType: 'fdc3.instrument',
-                contextMenu: {
-                  columnIds: ['Name', 'Symbol'],
-                },
-              },
-            ],
             ViewChart: [
               {
                 contextType: 'fdc3.instrument',
@@ -93,6 +87,18 @@ export const AdaptableAgGrid = () => {
                   tooltip: 'View News',
                   icon: {
                     name: 'clipboard',
+                  },
+                },
+              },
+            ],
+            ViewInstrument: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewInstrumentBtn',
+                  tooltip: 'View Instrument',
+                  icon: {
+                    name: 'visibility-on',
                   },
                 },
               },
@@ -127,7 +133,21 @@ export const AdaptableAgGrid = () => {
             // ],
           },
         },
-        handleIntent: () => {},
+        contexts: {
+          broadcasts: {
+            'fdc3.instrument': {
+              contextMenu: {
+                columnIds: ['Name', 'Symbol'],
+              },
+            },
+          },
+        },
+        handleIntent: (context) => {
+          console.log(`Received intent: ${context.intent}`, context.context);
+        },
+        handleContext: (context) => {
+          console.log(`Received context: `, context);
+        },
       },
       actionColumnOptions: {
         actionColumns: [
@@ -168,12 +188,15 @@ export const AdaptableAgGrid = () => {
       },
       predefinedConfig: {
         Theme: {
+          Revision,
           CurrentTheme: 'dark',
         },
         Dashboard: {
+          Revision,
           DashboardTitle: 'Adaptable - Connectifi',
         },
         Layout: {
+          Revision,
           CurrentLayout: 'DefaultLayout',
           Layouts: [
             {
