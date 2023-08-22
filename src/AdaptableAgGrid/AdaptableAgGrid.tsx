@@ -59,7 +59,6 @@ export const AdaptableAgGrid = () => {
         autoSizeColumnsInLayout: true,
       },
       fdc3Options: {
-        enableFdc3: true,
         enableLogging: true,
         gridDataContextMapping: {
           'fdc3.instrument': {
