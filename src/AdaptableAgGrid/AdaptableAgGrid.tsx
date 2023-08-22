@@ -119,16 +119,26 @@ export const AdaptableAgGrid = () => {
                   friendlyName: 'FDC3: Get Price Info',
                   button: {
                     id: 'GetPriceButton',
-                    label: 'Get Price Info',
+                    label: (button, context) => {
+                      const price = priceMap.get(context.rowData.Symbol);
+                      return `${price}` ?? 'Get Price';
+                    },
                     icon: {
                       name: 'quote',
                     },
                     tooltip: (button, context) => {
                       return `Get Price Info for ${context.rowData.Name}`;
                     },
-                    buttonStyle: {
-                      tone: 'info',
-                      variant: 'outlined',
+                    buttonStyle: (button, context) => {
+                      return priceMap.has(context.rowData.Symbol)
+                        ? {
+                            tone: 'success',
+                            variant: 'outlined',
+                          }
+                        : {
+                            tone: 'info',
+                            variant: 'outlined',
+                          };
                     },
                   },
                 },
@@ -146,6 +156,7 @@ export const AdaptableAgGrid = () => {
                   const ticker = contextData.id?.ticker;
                   const price = contextData.price;
                   if (ticker) {
+                    console.log('setting price for ticker', ticker, price);
                     priceMap.set(ticker, price);
                   }
                   // @ts-ignore
