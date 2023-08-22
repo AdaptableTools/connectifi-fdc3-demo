@@ -121,7 +121,7 @@ export const AdaptableAgGrid = () => {
                     id: 'GetPriceButton',
                     label: (button, context) => {
                       const price = priceMap.get(context.rowData.Symbol);
-                      return `${price}` ?? 'Get Price';
+                      return !!price ? `${price}` : 'Get Price';
                     },
                     icon: {
                       name: 'quote',
