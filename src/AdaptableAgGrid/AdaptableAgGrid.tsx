@@ -148,6 +148,10 @@ export const AdaptableAgGrid = () => {
                   if (ticker) {
                     priceMap.set(ticker, price);
                   }
+                  // @ts-ignore
+                  params.adaptableApi.gridApi.refreshCells(null, [
+                    'fdc3GetPriceColumn',
+                  ]);
                 },
               },
             ],
