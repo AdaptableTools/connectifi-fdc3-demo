@@ -117,10 +117,15 @@ export const AdaptableAgGrid = () => {
                       id: 'GetPriceButton',
                       label: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
-                        return !!price ? `${price}` : 'Get Price';
+                        return !!price ? `$ ${price}` : 'Get Price';
                       },
-                      icon: {
-                        name: 'quote',
+                      icon: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !!price
+                          ? {
+                              name: 'quote',
+                            }
+                          : null;
                       },
                       tooltip: (button, context) => {
                         return `Get Price Info for ${context.rowData.Name}`;
@@ -132,8 +137,8 @@ export const AdaptableAgGrid = () => {
                               variant: 'outlined',
                             }
                           : {
-                              tone: 'info',
-                              variant: 'outlined',
+                              tone: 'none',
+                              variant: 'text',
                             };
                       },
                     },
