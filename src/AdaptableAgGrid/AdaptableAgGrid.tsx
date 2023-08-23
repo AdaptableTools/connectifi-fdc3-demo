@@ -106,66 +106,70 @@ export const AdaptableAgGrid = () => {
                 },
               },
             ],
-          },
-          listensFor: ['ViewInstrument'],
-        },
-        customIntents: {
-          raises: {
-            GetPrice: [
-              {
-                contextType: 'fdc3.instrument',
-                actionColumn: {
-                  columnId: 'fdc3GetPriceColumn',
-                  friendlyName: 'FDC3: Get Price Info',
-                  button: {
-                    id: 'GetPriceButton',
-                    label: (button, context) => {
-                      const price = priceMap.get(context.rowData.Symbol);
-                      return !!price ? `${price}` : 'Get Price';
-                    },
-                    icon: {
-                      name: 'quote',
-                    },
-                    tooltip: (button, context) => {
-                      return `Get Price Info for ${context.rowData.Name}`;
-                    },
-                    buttonStyle: (button, context) => {
-                      return priceMap.has(context.rowData.Symbol)
-                        ? {
-                            tone: 'success',
-                            variant: 'outlined',
-                          }
-                        : {
-                            tone: 'info',
-                            variant: 'outlined',
-                          };
+            custom: {
+              GetPrice: [
+                {
+                  contextType: 'fdc3.instrument',
+                  actionColumn: {
+                    columnId: 'fdc3GetPriceColumn',
+                    friendlyName: 'FDC3: Get Price Info',
+                    button: {
+                      id: 'GetPriceButton',
+                      label: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !!price ? `${price}` : 'Get Price';
+                      },
+                      icon: {
+                        name: 'quote',
+                      },
+                      tooltip: (button, context) => {
+                        return `Get Price Info for ${context.rowData.Name}`;
+                      },
+                      buttonStyle: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol)
+                          ? {
+                              tone: 'success',
+                              variant: 'outlined',
+                            }
+                          : {
+                              tone: 'info',
+                              variant: 'outlined',
+                            };
+                      },
                     },
                   },
+                  handleIntentResolution: async (
+                    params: HandleFdc3IntentResolutionContext,
+                  ) => {
+                    console.log('handleIntentResolution', params);
+                    const intentResult =
+                      await params.intentResolution.getResult();
+                    console.log('intentResult', intentResult);
+                    if (!intentResult?.type) {
+                      return;
+                    }
+                    const contextData = intentResult as Fdc3CustomContext;
+                    const ticker = contextData.id?.ticker;
+                    const price = contextData.price;
+                    if (ticker) {
+                      console.log('setting price for ticker', ticker, price);
+                      priceMap.set(ticker, price);
+                    }
+                    // @ts-ignore
+                    params.adaptableApi.gridApi.refreshCells(null, [
+                      'fdc3GetPriceColumn',
+                    ]);
+                  },
                 },
-                handleIntentResolution: async (
-                  params: HandleFdc3IntentResolutionContext,
-                ) => {
-                  console.log('handleIntentResolution', params);
-                  const intentResult =
-                    await params.intentResolution.getResult();
-                  console.log('intentResult', intentResult);
-                  if (!intentResult?.type) {
-                    return;
-                  }
-                  const contextData = intentResult as Fdc3CustomContext;
-                  const ticker = contextData.id?.ticker;
-                  const price = contextData.price;
-                  if (ticker) {
-                    console.log('setting price for ticker', ticker, price);
-                    priceMap.set(ticker, price);
-                  }
-                  // @ts-ignore
-                  params.adaptableApi.gridApi.refreshCells(null, [
-                    'fdc3GetPriceColumn',
-                  ]);
-                },
-              },
-            ],
+              ],
+            },
+          },
+          listensFor: ['ViewInstrument'],
+          handleIntent: (eventInfo) => {
+            console.log(
+              `Received intent: ${eventInfo.intent}`,
+              eventInfo.context,
+            );
           },
         },
         contexts: {
@@ -177,15 +181,9 @@ export const AdaptableAgGrid = () => {
             },
           },
           listensFor: ['fdc3.instrument'],
-        },
-        handleIntent: (eventInfo) => {
-          console.log(
-            `Received intent: ${eventInfo.intent}`,
-            eventInfo.context,
-          );
-        },
-        handleContext: (eventInfo) => {
-          console.log(`Received context: `, eventInfo);
+          handleContext: (eventInfo) => {
+            console.log(`Received context: `, eventInfo);
+          },
         },
       },
       predefinedConfig: {
