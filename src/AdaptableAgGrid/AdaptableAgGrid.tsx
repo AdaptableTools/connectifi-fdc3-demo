@@ -76,8 +76,10 @@ export const AdaptableAgGrid = () => {
                 actionButton: {
                   id: 'viewChartBtn',
                   tooltip: 'View Chart',
-                  icon: {
-                    name: 'chart',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    tone: 'error',
+                    variant: 'outlined',
                   },
                 },
               },
@@ -88,8 +90,9 @@ export const AdaptableAgGrid = () => {
                 actionButton: {
                   id: 'viewNewsBtn',
                   tooltip: 'View News',
-                  icon: {
-                    name: 'clipboard',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    variant: 'outlined',
                   },
                 },
               },
@@ -102,6 +105,10 @@ export const AdaptableAgGrid = () => {
                   tooltip: 'View Instrument',
                   icon: {
                     name: 'visibility-on',
+                  },
+                  buttonStyle: {
+                    tone: 'info',
+                    variant: 'outlined',
                   },
                 },
               },
