@@ -18,7 +18,7 @@ const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 3;
+const Revision = 4;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
@@ -201,7 +201,7 @@ export const AdaptableAgGrid = () => {
         },
         Dashboard: {
           Revision,
-          DashboardTitle: 'Adaptable - Connectifi',
+          DashboardTitle: 'AdapTable - Connectifi',
         },
         Layout: {
           Revision,
