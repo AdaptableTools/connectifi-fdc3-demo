@@ -121,7 +121,7 @@ export const AdaptableAgGrid = () => {
                       },
                       icon: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
-                        return !!price
+                        return !price
                           ? {
                               name: 'quote',
                             }
@@ -134,12 +134,15 @@ export const AdaptableAgGrid = () => {
                         return priceMap.has(context.rowData.Symbol)
                           ? {
                               tone: 'success',
-                              variant: 'outlined',
+                              variant: 'text',
                             }
                           : {
-                              tone: 'none',
-                              variant: 'text',
+                              tone: 'info',
+                              variant: 'outlined',
                             };
+                      },
+                      disabled: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol);
                       },
                     },
                   },
