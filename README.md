@@ -1,14 +1,9 @@
 
 ## Introduction
 
-A starter [Adaptable](https://docs.adaptabletools.com/) template having:
+Shows AdapTable FDC3 2.0 using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
-- Adaptable
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Multiple eslint & prettier plugins installed
+More to come....
 
 ## Prerequisites
 
@@ -41,9 +36,7 @@ $ npm run dev
 
 > We've already implemented some recommended configurations in ```.eslintrc.js```, ```.eslintignore```, ```.prettierrc.js``` and ```.prettierignore```. Feel free to edit them if you have your own preferences.
 
-## Credits
 
-Based on [template-vite-react-ts-tailwind](https://github.com/RoyRao2333/template-vite-react-ts-tailwind)
 
 ## License
 
