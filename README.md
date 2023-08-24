@@ -3,6 +3,10 @@
 
 Shows AdapTable FDC3 2.0 using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
+AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
+
+It requires AdapTable Version 16.0.3 and higher.
+
 More to come....
 
 ## Prerequisites
