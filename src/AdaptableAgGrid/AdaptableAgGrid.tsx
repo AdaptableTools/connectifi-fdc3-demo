@@ -6,6 +6,7 @@ import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
   AdaptableOptions,
+  ColumnFilterPredicate,
   HandleFdc3IntentResolutionContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
@@ -51,7 +52,8 @@ export const AdaptableAgGrid = () => {
   const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
       licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
-      primaryKey: 'Symbol',
+      // @ts-ignore
+      primaryKey: 'Ticker',
       userName: 'AdaptableUser',
       adaptableId: 'AdaptableConnectifiPoc',
       adaptableStateKey: 'adaptable_connectifi_poc',
@@ -64,7 +66,7 @@ export const AdaptableAgGrid = () => {
           'fdc3.instrument': {
             name: '_colId.Name',
             id: {
-              ticker: '_colId.Symbol',
+              ticker: '_colId.Ticker',
             },
           },
         },
@@ -156,10 +158,8 @@ export const AdaptableAgGrid = () => {
                   handleIntentResolution: async (
                     params: HandleFdc3IntentResolutionContext,
                   ) => {
-                    console.log('handleIntentResolution', params);
                     const intentResult =
                       await params.intentResolution.getResult();
-                    console.log('intentResult', intentResult);
                     if (!intentResult?.type) {
                       return;
                     }
@@ -167,7 +167,6 @@ export const AdaptableAgGrid = () => {
                     const ticker = contextData.id?.ticker;
                     const price = contextData.price;
                     if (ticker) {
-                      console.log('setting price for ticker', ticker, price);
                       priceMap.set(ticker, price);
                     }
                     // @ts-ignore
@@ -191,13 +190,25 @@ export const AdaptableAgGrid = () => {
           broadcasts: {
             'fdc3.instrument': {
               contextMenu: {
-                columnIds: ['Name', 'Symbol'],
+                columnIds: ['Name', 'Ticker'],
+                icon: '_defaultFdc3',
               },
             },
           },
           listensFor: ['fdc3.instrument'],
           handleContext: (eventInfo) => {
-            console.log(`Received context: `, eventInfo);
+            if (eventInfo.context.type === 'fdc3.instrument') {
+              const columnFilterPredicate: ColumnFilterPredicate = {
+                PredicateId: 'Is',
+                Inputs: [eventInfo.context.id?.ticker],
+              };
+              const columnFilter = {
+                ColumnId: 'Ticker',
+                Predicate: columnFilterPredicate,
+              };
+
+              eventInfo.adaptableApi.filterApi.setColumnFilters([columnFilter]);
+            }
           },
         },
       },
@@ -220,7 +231,7 @@ export const AdaptableAgGrid = () => {
                 'Name',
                 'fdc3GetPriceColumn',
                 'Sector',
-                'Symbol',
+                'Ticker',
                 'fdc3ActionColumn',
               ],
             },

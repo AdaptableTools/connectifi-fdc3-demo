@@ -21,6 +21,7 @@ export const columnDefs: ColDef<TickerData>[] = [
   },
   {
     headerName: 'Ticker',
+    colId: 'Ticker',
     field: 'Symbol',
     type: 'abColDefString',
   },
