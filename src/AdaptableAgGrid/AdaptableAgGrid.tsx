@@ -8,7 +8,10 @@ import {
 import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
+  AdaptableButton,
   AdaptableOptions,
+  CustomRenderContext,
+  DashboardButtonContext,
   HandleFdc3IntentResolutionContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
@@ -255,6 +258,83 @@ export const AdaptableAgGrid = () => {
           }
           return menuItem.module === 'Fdc3';
         },
+      },
+
+      dashboardOptions: {
+        customDashboardButtons: [
+          {
+            label: 'Info',
+            icon: {
+              name: 'info',
+            },
+            onClick: (
+              button: AdaptableButton<DashboardButtonContext>,
+              context: DashboardButtonContext,
+            ) => {
+              context.adaptableApi.settingsPanelApi.openCustomSettingsPanel(
+                'Demo Info',
+              );
+            },
+            buttonStyle: {
+              tone: 'none',
+              variant: 'outlined',
+            },
+          },
+        ],
+      },
+      settingsPanelOptions: {
+        icon: 'ApplicationIcon',
+        title: 'Config Viewer',
+        navigation: {
+          items: [
+            'Demo Info',
+            '-',
+            'CalculatedColumn',
+            'FormatColumn',
+            'Charting',
+            '-',
+            'Dashboard',
+            'ToolPanel',
+            'StatusBar',
+            '-',
+            'Alert',
+            'CustomSort',
+            'Layout',
+            'Export',
+            'StyledColumn',
+            '-',
+            'FlashingCell',
+            'QuickSearch',
+            'Query',
+            'Filter',
+            '-',
+            'GridInfo',
+            'TeamSharing',
+            'Theme',
+            'SystemStatus',
+          ],
+        },
+        customSettingsPanels: [
+          {
+            name: 'Demo Info',
+            icon: {
+              name: 'info',
+            },
+            render: (customRenderContext: CustomRenderContext) => {
+              if (customRenderContext.visible) {
+                return `
+                  <h1>AdapTable & Connectifi FDC3 Demo</h1>
+                  <br/>
+                  <p>TODO - describing what the app does</p>
+                
+                `;
+              } else {
+                console.log('unmount');
+              }
+              return null;
+            },
+          },
+        ],
       },
       predefinedConfig: {
         Theme: {
