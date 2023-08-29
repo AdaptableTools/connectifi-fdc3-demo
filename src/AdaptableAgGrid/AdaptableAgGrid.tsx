@@ -19,7 +19,7 @@ const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 4;
+const Revision = 5;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
@@ -66,7 +66,7 @@ export const AdaptableAgGrid = () => {
           'fdc3.instrument': {
             name: '_colId.Name',
             id: {
-              ticker: '_colId.Ticker',
+              ticker: '_field.Symbol',
             },
           },
         },
@@ -121,7 +121,7 @@ export const AdaptableAgGrid = () => {
                   contextType: 'fdc3.instrument',
                   actionColumn: {
                     columnId: 'fdc3GetPriceColumn',
-                    friendlyName: 'FDC3: Get Price Info',
+                    friendlyName: 'Get Price',
                     button: {
                       id: 'GetPriceButton',
                       label: (button, context) => {
@@ -190,26 +190,40 @@ export const AdaptableAgGrid = () => {
           broadcasts: {
             'fdc3.instrument': {
               contextMenu: {
-                columnIds: ['Name', 'Ticker'],
+                columnIds: ['Name'],
                 icon: '_defaultFdc3',
+              },
+              actionColumn: {
+                columnId: 'fdc3BroadcastInstrument',
+                friendlyName: 'Ticker',
+                button: {
+                  id: 'broadcastInstrumentBtn',
+                  label: (button, context) => `  ${context.rowData.Symbol}`,
+                  icon: { name: 'broadcast' },
+                  tooltip: `Broadcast Instrument`,
+                  buttonStyle: {
+                    tone: 'info',
+                    variant: 'text',
+                  },
+                },
               },
             },
           },
           listensFor: ['fdc3.instrument'],
           handleContext: (eventInfo) => {
             if (eventInfo.context.type === 'fdc3.instrument') {
-              const columnFilterPredicate: ColumnFilterPredicate = {
-                PredicateId: 'Is',
-                Inputs: [eventInfo.context.id?.ticker],
-              };
-              const columnFilter = {
-                ColumnId: 'Ticker',
-                Predicate: columnFilterPredicate,
-              };
-
-              eventInfo.adaptableApi.filterApi.setColumnFilters([columnFilter]);
+              eventInfo.adaptableApi.filterApi.setColumnFilterForColumn(
+                'Ticker',
+                {
+                  PredicateId: 'Is',
+                  PredicateInputs: [eventInfo.context.id?.ticker],
+                },
+              );
             }
           },
+        },
+        actionColumnDefaultConfiguration: {
+          width: 125,
         },
       },
       predefinedConfig: {
@@ -228,12 +242,16 @@ export const AdaptableAgGrid = () => {
             {
               Name: 'DefaultLayout',
               Columns: [
+                'fdc3BroadcastInstrument',
                 'Name',
                 'fdc3GetPriceColumn',
                 'Sector',
-                'Ticker',
                 'fdc3ActionColumn',
               ],
+              ColumnWidthMap: {
+                fdc3GetPriceColumn: 109,
+                fdc3BroadcastInstrument: 103,
+              },
             },
           ],
         },

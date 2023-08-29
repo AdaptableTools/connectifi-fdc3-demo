@@ -23,6 +23,7 @@ export const columnDefs: ColDef<TickerData>[] = [
     headerName: 'Ticker',
     colId: 'Ticker',
     field: 'Symbol',
+    hide: true,
     type: 'abColDefString',
   },
   // {
