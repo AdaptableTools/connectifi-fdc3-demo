@@ -4,6 +4,7 @@ import { TickerData } from './rowData';
 export const defaultColDef: ColDef = {
   editable: true,
   sortable: true,
+  resizable: true,
   filter: true,
   floatingFilter: true,
 };
@@ -21,6 +22,7 @@ export const columnDefs: ColDef<TickerData>[] = [
   },
   {
     headerName: 'Ticker',
+    colId: 'Ticker',
     field: 'Symbol',
     type: 'abColDefString',
   },

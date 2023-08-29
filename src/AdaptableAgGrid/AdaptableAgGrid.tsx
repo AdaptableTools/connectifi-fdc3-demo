@@ -18,7 +18,7 @@ const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 4;
+const Revision = 7;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
@@ -51,7 +51,8 @@ export const AdaptableAgGrid = () => {
   const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
       licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
-      primaryKey: 'Symbol',
+      // @ts-ignore
+      primaryKey: 'Ticker',
       userName: 'AdaptableUser',
       adaptableId: 'AdaptableConnectifiPoc',
       adaptableStateKey: 'adaptable_connectifi_poc',
@@ -64,7 +65,7 @@ export const AdaptableAgGrid = () => {
           'fdc3.instrument': {
             name: '_colId.Name',
             id: {
-              ticker: '_colId.Symbol',
+              ticker: '_field.Symbol',
             },
           },
         },
@@ -75,10 +76,10 @@ export const AdaptableAgGrid = () => {
                 contextType: 'fdc3.instrument',
                 actionButton: {
                   id: 'viewChartBtn',
-                  tooltip: 'View Chart',
+                  tooltip: 'Raise: ViewChart',
                   icon: '_defaultFdc3',
                   buttonStyle: {
-                    tone: 'error',
+                    tone: 'info',
                     variant: 'outlined',
                   },
                 },
@@ -89,10 +90,11 @@ export const AdaptableAgGrid = () => {
                 contextType: 'fdc3.instrument',
                 actionButton: {
                   id: 'viewNewsBtn',
-                  tooltip: 'View News',
+                  tooltip: 'Raise: ViewNews',
                   icon: '_defaultFdc3',
                   buttonStyle: {
                     variant: 'outlined',
+                    tone: 'info',
                   },
                 },
               },
@@ -102,7 +104,7 @@ export const AdaptableAgGrid = () => {
                 contextType: 'fdc3.instrument',
                 actionButton: {
                   id: 'viewInstrumentBtn',
-                  tooltip: 'View Instrument',
+                  tooltip: 'Raise: ViewInstrument',
                   icon: {
                     name: 'visibility-on',
                   },
@@ -119,12 +121,12 @@ export const AdaptableAgGrid = () => {
                   contextType: 'fdc3.instrument',
                   actionColumn: {
                     columnId: 'fdc3GetPriceColumn',
-                    friendlyName: 'FDC3: Get Price Info',
+                    friendlyName: 'Get Price',
                     button: {
                       id: 'GetPriceButton',
                       label: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
-                        return !!price ? `$ ${price}` : 'Get Price';
+                        return !!price ? `$ ${price}` : 'Raise: GetPrice';
                       },
                       icon: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
@@ -140,7 +142,7 @@ export const AdaptableAgGrid = () => {
                       buttonStyle: (button, context) => {
                         return priceMap.has(context.rowData.Symbol)
                           ? {
-                              tone: 'success',
+                              tone: 'error',
                               variant: 'text',
                             }
                           : {
@@ -156,10 +158,8 @@ export const AdaptableAgGrid = () => {
                   handleIntentResolution: async (
                     params: HandleFdc3IntentResolutionContext,
                   ) => {
-                    console.log('handleIntentResolution', params);
                     const intentResult =
                       await params.intentResolution.getResult();
-                    console.log('intentResult', intentResult);
                     if (!intentResult?.type) {
                       return;
                     }
@@ -167,7 +167,6 @@ export const AdaptableAgGrid = () => {
                     const ticker = contextData.id?.ticker;
                     const price = contextData.price;
                     if (ticker) {
-                      console.log('setting price for ticker', ticker, price);
                       priceMap.set(ticker, price);
                     }
                     // @ts-ignore
@@ -191,14 +190,35 @@ export const AdaptableAgGrid = () => {
           broadcasts: {
             'fdc3.instrument': {
               contextMenu: {
-                columnIds: ['Name', 'Symbol'],
+                columnIds: ['Name'],
+                icon: '_defaultFdc3',
+              },
+              actionButton: {
+                id: 'broadcastInstrumentBtn',
+                icon: { name: 'broadcast' },
+                tooltip: `Broadcast: Instrument`,
+                buttonStyle: {
+                  tone: 'success',
+                  variant: 'outlined',
+                },
               },
             },
           },
           listensFor: ['fdc3.instrument'],
           handleContext: (eventInfo) => {
-            console.log(`Received context: `, eventInfo);
+            if (eventInfo.context.type === 'fdc3.instrument') {
+              eventInfo.adaptableApi.filterApi.setColumnFilterForColumn(
+                'Ticker',
+                {
+                  PredicateId: 'Is',
+                  PredicateInputs: [eventInfo.context.id?.ticker],
+                },
+              );
+            }
           },
+        },
+        actionColumnDefaultConfiguration: {
+          width: 150,
         },
       },
       predefinedConfig: {
@@ -217,12 +237,16 @@ export const AdaptableAgGrid = () => {
             {
               Name: 'DefaultLayout',
               Columns: [
+                'Ticker',
                 'Name',
                 'fdc3GetPriceColumn',
                 'Sector',
-                'Symbol',
                 'fdc3ActionColumn',
               ],
+              ColumnWidthMap: {
+                fdc3GetPriceColumn: 150,
+                Ticker: 110,
+              },
             },
           ],
         },
