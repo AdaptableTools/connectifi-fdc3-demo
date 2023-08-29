@@ -21,19 +21,40 @@ export const columnDefs: ColDef<TickerData>[] = [
     type: 'abColDefString',
   },
   {
+    headerName: 'Contact',
+    field: 'Contact',
+    type: 'abColDefString',
+  },
+  {
+    headerName: 'Email',
+    field: 'Email',
+    type: 'abColDefString',
+  },
+
+
+  {
     headerName: 'Ticker',
     colId: 'Ticker',
     field: 'Symbol',
     type: 'abColDefString',
   },
   {
-    headerName: 'Position',
-    colId: 'Position',
+    headerName: 'Price',
+    colId: 'Price',
     type: 'abColDefNumber',
     valueGetter: () => {
-      return Math.floor(Math.random() * 4990000) - 1000099;
+      return  Math.floor(Math.random() * 1000) - 200;
     },
   },
+  {
+    headerName: 'PriceMultiplier',
+    colId: 'PriceMultiplier',
+    type: 'abColDefNumber',
+    valueGetter: () => {
+      return 10// Math.floor(Math.random() * 120) - 60;
+    },
+  },
+ 
   {
     headerName: 'Performance',
     colId: 'Performance',

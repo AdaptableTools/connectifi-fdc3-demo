@@ -13,6 +13,7 @@ import { rowData, TickerData } from './rowData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
+import { join } from 'path';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
@@ -235,7 +236,7 @@ export const AdaptableAgGrid = () => {
           FormatColumns: [
             {
               Scope: {
-                ColumnIds: ['Position'],
+                ColumnIds: ['SectorPnl'],
               },
               Rule: {
                 Predicates: [
@@ -253,10 +254,13 @@ export const AdaptableAgGrid = () => {
                   FractionDigits: 2,
                 },
               },
+              Style: {
+                FontWeight: 'Bold',
+              },
             },
             {
               Scope: {
-                ColumnIds: ['Position'],
+                ColumnIds: ['SectorPnl'],
               },
               Rule: {
                 Predicates: [
@@ -278,7 +282,7 @@ export const AdaptableAgGrid = () => {
 
             {
               Scope: {
-                ColumnIds: ['Position'],
+                ColumnIds: ['SectorPnl'],
               },
               Rule: {
                 Predicates: [
@@ -299,7 +303,7 @@ export const AdaptableAgGrid = () => {
             },
             {
               Scope: {
-                ColumnIds: ['Position'],
+                ColumnIds: ['SectorPnl'],
               },
               Rule: {
                 Predicates: [
@@ -312,7 +316,7 @@ export const AdaptableAgGrid = () => {
             },
             {
               Scope: {
-                ColumnIds: ['Position'],
+                ColumnIds: ['SectorPnl'],
               },
               Rule: {
                 Predicates: [
@@ -322,6 +326,53 @@ export const AdaptableAgGrid = () => {
                 ],
               },
               Style: { ForeColor: 'Red' },
+            },
+            {
+              Scope: {
+                ColumnIds: ['SectorPnl'],
+              },
+              CellAlignment: 'Right',
+            },
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Style: {
+                FontStyle: 'Italic',
+              },
+              DisplayFormat: {
+                Formatter: 'NumberFormatter',
+                Options: {
+                  Parentheses: true,
+                },
+              },
+              CellAlignment: 'Right',
+            },
+          ],
+        },
+        CalculatedColumn: {
+          Revision,
+          CalculatedColumns: [
+            {
+              ColumnId: 'Position',
+              FriendlyName: 'Position',
+              Query: {
+                ScalarExpression: '[Price] * [PriceMultiplier]',
+              },
+              CalculatedColumnSettings: {
+                DataType: 'Number',
+              },
+            },
+            {
+              ColumnId: 'SectorPnl',
+              FriendlyName: 'Sector Pnl',
+              Query: {
+                AggregatedScalarExpression:
+                  'SUM([Position], GROUP_BY([Sector]))',
+              },
+              CalculatedColumnSettings: {
+                DataType: 'Number',
+              },
             },
           ],
         },
@@ -334,9 +385,14 @@ export const AdaptableAgGrid = () => {
               Columns: [
                 'Ticker',
                 'Name',
+                'Price',
+                'PriceMultiplier',
                 'fdc3GetPriceColumn',
                 'Sector',
                 'Position',
+                'Contact',
+                'Email',
+                'SectorPnl',
                 'Performance',
                 'fdc3ActionColumn',
               ],
@@ -490,6 +546,28 @@ export const AdaptableAgGrid = () => {
                     size: 10,
                   },
                 },
+              },
+            },
+            {
+              ColumnId: 'Position',
+
+              PercentBarStyle: {
+                RangeValueType: 'Number',
+                CellRanges: [
+                  {
+                    Min: 'Col-Min',
+                    Max: 0,
+                    Color: 'red',
+                  },
+                  {
+                    Min: 1,
+                    Max: 'Col-Max',
+                    Color: 'green',
+                  },
+                ],
+                CellText: ['CellValue'],
+                CellTextPosition: 'Merged',
+                BackColor: '#808080',
               },
             },
           ],
