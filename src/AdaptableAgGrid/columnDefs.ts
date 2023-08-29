@@ -21,18 +21,6 @@ export const columnDefs: ColDef<TickerData>[] = [
     type: 'abColDefString',
   },
   {
-    headerName: 'Contact',
-    field: 'Contact',
-    type: 'abColDefString',
-  },
-  {
-    headerName: 'Email',
-    field: 'Email',
-    type: 'abColDefString',
-  },
-
-
-  {
     headerName: 'Ticker',
     colId: 'Ticker',
     field: 'Symbol',
@@ -42,19 +30,15 @@ export const columnDefs: ColDef<TickerData>[] = [
     headerName: 'Price',
     colId: 'Price',
     type: 'abColDefNumber',
-    valueGetter: () => {
-      return  Math.floor(Math.random() * 1000) - 200;
-    },
+    field: 'Price',
   },
   {
-    headerName: 'PriceMultiplier',
-    colId: 'PriceMultiplier',
+    headerName: 'Position',
+    colId: 'Position',
     type: 'abColDefNumber',
-    valueGetter: () => {
-      return 10// Math.floor(Math.random() * 120) - 60;
-    },
+    field: 'Position',
   },
- 
+
   {
     headerName: 'Performance',
     colId: 'Performance',
@@ -67,14 +51,4 @@ export const columnDefs: ColDef<TickerData>[] = [
       return [first, second, third, fourth];
     },
   },
-  // {
-  //   headerName: 'Contact',
-  //   field: 'Contact',
-  //   type: 'abColDefString',
-  // },
-  // {
-  //   headerName: 'Email',
-  //   field: 'Email',
-  //   type: 'abColDefString',
-  // },
 ];

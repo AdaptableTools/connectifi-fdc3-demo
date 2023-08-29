@@ -51,6 +51,17 @@ export const AdaptableAgGrid = () => {
       suppressMenuHide: true,
       enableRangeSelection: true,
       enableCharts: true,
+      statusBar: {
+        statusPanels: [
+          { statusPanel: 'agTotalRowCountComponent', align: 'left' },
+          { statusPanel: 'agFilteredRowCountComponent' },
+          {
+            key: 'Center Panel',
+            statusPanel: 'AdaptableStatusPanel',
+            align: 'center',
+          },
+        ],
+      },
       getContextMenuItems: (params: GetContextMenuItemsParams<TickerData>) => {
         if (params.column?.getId() === 'Ticker') {
           return [];
@@ -104,7 +115,7 @@ export const AdaptableAgGrid = () => {
                   icon: '_defaultFdc3',
                   buttonStyle: {
                     variant: 'outlined',
-                    tone: 'info',
+                    tone: 'warning',
                   },
                 },
               },
@@ -119,7 +130,7 @@ export const AdaptableAgGrid = () => {
                     name: 'visibility-on',
                   },
                   buttonStyle: {
-                    tone: 'info',
+                    tone: 'error',
                     variant: 'outlined',
                   },
                 },
@@ -254,9 +265,33 @@ export const AdaptableAgGrid = () => {
           Revision,
           DashboardTitle: 'AdapTable - Connectifi',
         },
+        StatusBar: {
+          Revision,
+          StatusBars: [
+            {
+              Key: 'Center Panel',
+              StatusBarPanels: ['CellSummary'],
+            },
+          ],
+        },
         FormatColumn: {
           Revision,
           FormatColumns: [
+            {
+              Scope: {
+                ColumnIds: ['Price'],
+              },
+              DisplayFormat: {
+                Formatter: 'NumberFormatter',
+                Options: {
+                  FractionDigits: 2,
+                  Prefix: '$',
+                },
+              },
+              Style: {
+                FontWeight: 'Bold',
+              },
+            },
             {
               Scope: {
                 ColumnIds: ['SectorPnl'],
@@ -326,7 +361,7 @@ export const AdaptableAgGrid = () => {
             },
             {
               Scope: {
-                ColumnIds: ['SectorPnl'],
+                ColumnIds: ['SectorPnl', 'Price', 'Position'],
               },
               Rule: {
                 Predicates: [
@@ -339,7 +374,7 @@ export const AdaptableAgGrid = () => {
             },
             {
               Scope: {
-                ColumnIds: ['SectorPnl'],
+                ColumnIds: ['SectorPnl', 'Price', 'Position'],
               },
               Rule: {
                 Predicates: [
@@ -367,6 +402,7 @@ export const AdaptableAgGrid = () => {
                 Formatter: 'NumberFormatter',
                 Options: {
                   Parentheses: true,
+                  FractionDigits: 0,
                 },
               },
               CellAlignment: 'Right',
@@ -409,7 +445,6 @@ export const AdaptableAgGrid = () => {
                 'Ticker',
                 'Name',
                 'Price',
-                'PriceMultiplier',
                 'fdc3GetPriceColumn',
                 'Sector',
                 'Position',
@@ -569,28 +604,6 @@ export const AdaptableAgGrid = () => {
                     size: 10,
                   },
                 },
-              },
-            },
-            {
-              ColumnId: 'Position',
-
-              PercentBarStyle: {
-                RangeValueType: 'Number',
-                CellRanges: [
-                  {
-                    Min: 'Col-Min',
-                    Max: 0,
-                    Color: 'red',
-                  },
-                  {
-                    Min: 1,
-                    Max: 'Col-Max',
-                    Color: 'green',
-                  },
-                ],
-                CellText: ['CellValue'],
-                CellTextPosition: 'Merged',
-                BackColor: '#808080',
               },
             },
           ],
