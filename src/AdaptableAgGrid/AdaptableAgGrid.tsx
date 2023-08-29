@@ -6,7 +6,6 @@ import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
   AdaptableOptions,
-  ColumnFilterPredicate,
   HandleFdc3IntentResolutionContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
@@ -19,7 +18,7 @@ const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 6;
+const Revision = 7;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
@@ -105,7 +104,7 @@ export const AdaptableAgGrid = () => {
                 contextType: 'fdc3.instrument',
                 actionButton: {
                   id: 'viewInstrumentBtn',
-                  tooltip: 'Rause: ViewInstrument',
+                  tooltip: 'Raise: ViewInstrument',
                   icon: {
                     name: 'visibility-on',
                   },
