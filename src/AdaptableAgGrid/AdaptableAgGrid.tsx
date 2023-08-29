@@ -126,7 +126,7 @@ export const AdaptableAgGrid = () => {
                       id: 'GetPriceButton',
                       label: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
-                        return !!price ? `$ ${price}` : 'Raise: GetPrice';
+                        return !!price ? `$ ${price}` : 'Get Price';
                       },
                       icon: (button, context) => {
                         const price = priceMap.get(context.rowData.Symbol);
@@ -230,6 +230,101 @@ export const AdaptableAgGrid = () => {
           Revision,
           DashboardTitle: 'AdapTable - Connectifi',
         },
+        FormatColumn: {
+          Revision,
+          FormatColumns: [
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Rule: {
+                Predicates: [
+                  {
+                    PredicateId: 'GreaterThan',
+                    Inputs: [1000000],
+                  },
+                ],
+              },
+              DisplayFormat: {
+                Formatter: 'NumberFormatter',
+                Options: {
+                  Multiplier: 0.000001,
+                  Suffix: 'M',
+                  FractionDigits: 2,
+                },
+              },
+            },
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Rule: {
+                Predicates: [
+                  {
+                    PredicateId: 'GreaterThan',
+                    Inputs: [1000],
+                  },
+                ],
+              },
+              DisplayFormat: {
+                Formatter: 'NumberFormatter',
+                Options: {
+                  Multiplier: 0.001,
+                  Suffix: 'K',
+                  FractionDigits: 2,
+                },
+              },
+            },
+
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Rule: {
+                Predicates: [
+                  {
+                    PredicateId: 'LessThan',
+                    Inputs: [0],
+                  },
+                ],
+              },
+              DisplayFormat: {
+                Formatter: 'NumberFormatter',
+                Options: {
+                  Multiplier: 0.001,
+                  Suffix: 'K',
+                  FractionDigits: 2,
+                },
+              },
+            },
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Rule: {
+                Predicates: [
+                  {
+                    PredicateId: 'Positive',
+                  },
+                ],
+              },
+              Style: { ForeColor: 'Green' },
+            },
+            {
+              Scope: {
+                ColumnIds: ['Position'],
+              },
+              Rule: {
+                Predicates: [
+                  {
+                    PredicateId: 'Negative',
+                  },
+                ],
+              },
+              Style: { ForeColor: 'Red' },
+            },
+          ],
+        },
         Layout: {
           Revision,
           CurrentLayout: 'DefaultLayout',
@@ -241,11 +336,160 @@ export const AdaptableAgGrid = () => {
                 'Name',
                 'fdc3GetPriceColumn',
                 'Sector',
+                'Position',
+                'Performance',
                 'fdc3ActionColumn',
               ],
               ColumnWidthMap: {
                 fdc3GetPriceColumn: 150,
                 Ticker: 110,
+              },
+            },
+          ],
+        },
+        StyledColumn: {
+          Revision,
+          StyledColumns: [
+            {
+              ColumnId: 'Sector',
+              BadgeStyle: {
+                Badges: [
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Industrials'],
+                    },
+                    Icon: {
+                      name: 'building',
+                    },
+                    Style: {
+                      BackColor: 'Red',
+                      ForeColor: 'white',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Health Care'],
+                    },
+                    Icon: {
+                      name: 'science',
+                    },
+                    Style: {
+                      BackColor: 'Orange',
+                      ForeColor: 'Black',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Technology'],
+                    },
+                    Icon: {
+                      name: 'laptop',
+                    },
+                    Style: {
+                      BackColor: 'LightBlue',
+                      ForeColor: 'Black',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Consumer'],
+                    },
+                    Icon: {
+                      name: 'person',
+                    },
+                    Style: {
+                      BackColor: 'DarkBlue',
+                      ForeColor: 'white',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Utilities'],
+                    },
+                    Icon: {
+                      name: 'spanner',
+                    },
+                    Style: {
+                      BackColor: 'DarkGreen',
+                      ForeColor: 'white',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Financials'],
+                    },
+                    Icon: {
+                      name: 'dollar',
+                    },
+                    Style: {
+                      BackColor: 'LightGreen',
+                      ForeColor: 'black',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Real Estate'],
+                    },
+                    Icon: {
+                      name: 'home',
+                    },
+                    Style: {
+                      BackColor: 'Purple',
+                      ForeColor: 'white',
+                      BorderRadius: 6,
+                    },
+                  },
+                  {
+                    Predicate: {
+                      PredicateId: 'Is',
+                      Inputs: ['Energy'],
+                    },
+                    Icon: {
+                      name: 'lightning',
+                    },
+                    Style: {
+                      BackColor: 'Brown',
+                      ForeColor: 'white',
+                      BorderRadius: 6,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              ColumnId: 'Performance',
+              SparkLineStyle: {
+                options: {
+                  type: 'area',
+                  line: {
+                    stroke: 'rgb(124, 255, 178)',
+                    strokeWidth: 2,
+                  },
+                  padding: {
+                    top: 5,
+                    bottom: 5,
+                  },
+                  marker: {
+                    size: 3,
+                    shape: 'diamond',
+                  },
+                  highlightStyle: {
+                    size: 10,
+                  },
+                },
               },
             },
           ],
