@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { GridOptions } from '@ag-grid-community/core';
+import {
+  GetContextMenuItemsParams,
+  GridOptions,
+} from '@ag-grid-community/core';
 import { AgGridReact } from '@ag-grid-community/react';
 import AdaptableReact, {
   AdaptableApi,
@@ -13,6 +16,10 @@ import { rowData, TickerData } from './rowData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
+import {
+  AdaptableMenuItem,
+  ContextMenuContext,
+} from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Menu';
 
 const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
 
@@ -44,6 +51,12 @@ export const AdaptableAgGrid = () => {
       suppressMenuHide: true,
       enableRangeSelection: true,
       enableCharts: true,
+      getContextMenuItems: (params: GetContextMenuItemsParams<TickerData>) => {
+        if (params.column?.getId() === 'Ticker') {
+          return [];
+        }
+        return params.defaultItems ?? [];
+      },
     }),
     [],
   );
@@ -56,9 +69,6 @@ export const AdaptableAgGrid = () => {
       userName: 'AdaptableUser',
       adaptableId: 'AdaptableConnectifiPoc',
       adaptableStateKey: 'adaptable_connectifi_poc',
-      layoutOptions: {
-        autoSizeColumnsInLayout: true,
-      },
       fdc3Options: {
         enableLogging: true,
         gridDataContextMapping: {
@@ -190,7 +200,7 @@ export const AdaptableAgGrid = () => {
           broadcasts: {
             'fdc3.instrument': {
               contextMenu: {
-                columnIds: ['Name'],
+                columnIds: ['Ticker', 'Name'],
                 icon: '_defaultFdc3',
               },
               actionButton: {
@@ -219,6 +229,20 @@ export const AdaptableAgGrid = () => {
         },
         actionColumnDefaultConfiguration: {
           width: 150,
+        },
+      },
+      layoutOptions: {
+        autoSizeColumnsInLayout: true,
+      },
+      menuOptions: {
+        showAdaptableContextMenu: (
+          menuItem: AdaptableMenuItem,
+          menuContext: ContextMenuContext<TickerData>,
+        ) => {
+          if (menuContext.adaptableColumn.columnId !== 'Ticker') {
+            return true;
+          }
+          return menuItem.module === 'Fdc3';
         },
       },
       predefinedConfig: {
