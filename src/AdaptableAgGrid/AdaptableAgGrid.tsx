@@ -207,7 +207,7 @@ export const AdaptableAgGrid = () => {
           listensFor: ['ViewInstrument'],
           handleIntent: (eventInfo: HandleFdc3Context) => {
             const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-            const ticker = eventInfo.context.id?.ticker;
+            const ticker: string = (eventInfo.context.id?.ticker as string).toUpperCase();
             const rowHighlightInfo: RowHighlightInfo = {
               primaryKeyValue: ticker,
               timeout: 5000,
