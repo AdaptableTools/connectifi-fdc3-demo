@@ -167,7 +167,7 @@ export const AdaptableAgGrid = () => {
                       buttonStyle: (button, context) => {
                         return priceMap.has(context.rowData.Symbol)
                           ? {
-                              tone: 'error',
+                              tone: 'success',
                               variant: 'text',
                             }
                           : {
