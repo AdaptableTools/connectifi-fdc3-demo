@@ -13,6 +13,7 @@ import AdaptableReact, {
   CustomRenderContext,
   DashboardButtonContext,
   HandleFdc3IntentResolutionContext,
+  RowHighlightInfo,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData } from './rowData';
@@ -204,6 +205,17 @@ export const AdaptableAgGrid = () => {
           },
           listensFor: ['ViewInstrument'],
           handleIntent: (eventInfo) => {
+            const ticker = eventInfo.context.id?.ticker;
+            const rowHighlightInfo: RowHighlightInfo = {
+              primaryKeyValue: ticker,
+              timeout: 5000,
+              highlightStyle: {
+                BackColor: 'Yellow',
+              },
+            };
+
+            eventInfo.adaptableApi.gridApi.jumpToRow(ticker);
+            eventInfo.adaptableApi.gridApi.highlightRow(rowHighlightInfo);
             console.log(
               `Received intent: ${eventInfo.intent}`,
               eventInfo.context,
