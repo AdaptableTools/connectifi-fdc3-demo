@@ -207,21 +207,21 @@ export const AdaptableAgGrid = () => {
           listensFor: ['ViewInstrument'],
           handleIntent: (eventInfo: HandleFdc3Context) => {
             const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-            //   const ticker: string = (
-            //     eventInfo.context.id?.ticker as string
-            //   ).toUpperCase();
+            const ticker = eventInfo.context.id?.ticker;
+            console.log('TICKER', ticker)
+            const upperTicker: number = ticker.toUpperCase()
             const rowHighlightInfo: RowHighlightInfo = {
-              primaryKeyValue: 'IBM',
+              primaryKeyValue: upperTicker,
               timeout: 5000,
               highlightStyle: {
                 BackColor: 'Yellow',
               },
             };
 
-            adaptableApi.gridApi.jumpToRow('IBM');
+            adaptableApi.gridApi.jumpToRow(upperTicker);
             adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-            adaptableApi.systemStatusApi.setInfoSystemStatus(
-              'Intent Listened: ' + 'IBM',
+            adaptableApi.systemStatusApi.setErrorSystemStatus(
+              'Intent Raised: ' + upperTicker,
               JSON.stringify(eventInfo.context),
             );
           },
