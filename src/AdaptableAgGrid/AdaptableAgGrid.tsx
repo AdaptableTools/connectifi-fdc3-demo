@@ -79,11 +79,10 @@ export const AdaptableAgGrid = () => {
   const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
       licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
-      // @ts-ignore
       primaryKey: 'Ticker',
       userName: 'AdaptableUser',
-      adaptableId: 'AdaptableConnectifiPoc',
-      adaptableStateKey: 'adaptable_connectifi_poc',
+      adaptableId: 'Adaptable Connectifi FDC3 Demo',
+      adaptableStateKey: 'adaptable_connectifi_fdc3_demo',
       fdc3Options: {
         enableLogging: true,
         gridDataContextMapping: {
@@ -345,9 +344,12 @@ export const AdaptableAgGrid = () => {
         Dashboard: {
           Revision,
           DashboardTitle: 'AdapTable - Connectifi',
-          Tabs:[{
-            Name: "FDC3 Demo", Toolbars:['Layout', 'SystemStatus', 'Alert', 'Query', 'Export']
-          }]
+          Tabs: [
+            {
+              Name: 'FDC3 Demo',
+              Toolbars: ['Layout', 'SystemStatus', 'Alert', 'Query', 'Export'],
+            },
+          ],
         },
         StatusBar: {
           Revision,
@@ -444,7 +446,8 @@ export const AdaptableAgGrid = () => {
                   Suffix: 'K',
                   FractionDigits: 2,
                 },
-              },IncludeGroupedRows: true,
+              },
+              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -500,16 +503,6 @@ export const AdaptableAgGrid = () => {
         CalculatedColumn: {
           Revision,
           CalculatedColumns: [
-            {
-              ColumnId: 'Position',
-              FriendlyName: 'Position',
-              Query: {
-                ScalarExpression: '[Price] * [PriceMultiplier]',
-              },
-              CalculatedColumnSettings: {
-                DataType: 'Number',
-              },
-            },
             {
               ColumnId: 'SectorPnl',
               FriendlyName: 'Sector Pnl',

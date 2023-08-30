@@ -51,14 +51,4 @@ export const columnDefs: ColDef<TickerData>[] = [
       return [first, second, third, fourth];
     },
   },
-  {
-    headerName: 'MyArray',
-    colId: 'Array',
-    type: 'abColDefNumberArray',
-    field: 'Array',
-    editable: true,
-    floatingFilter: false,
-    filter: false,
-    resizable: true,
-  },
 ];
