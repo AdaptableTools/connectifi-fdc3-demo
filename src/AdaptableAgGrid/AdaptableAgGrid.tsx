@@ -208,20 +208,20 @@ export const AdaptableAgGrid = () => {
           handleIntent: (eventInfo: HandleFdc3Context) => {
             const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
             const ticker = eventInfo.context.id?.ticker;
-            console.log('TICKER', ticker)
-            const upperTicker: number = ticker.toUpperCase()
+       //     const upperTicker: number = ticker.toUpperCase()
             const rowHighlightInfo: RowHighlightInfo = {
-              primaryKeyValue: upperTicker,
+              primaryKeyValue: ticker,
               timeout: 5000,
               highlightStyle: {
                 BackColor: 'Yellow',
+                ForeColor: 'Black'
               },
             };
 
-            adaptableApi.gridApi.jumpToRow(upperTicker);
+            adaptableApi.gridApi.jumpToRow(ticker);
             adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-            adaptableApi.systemStatusApi.setErrorSystemStatus(
-              'Intent Raised: ' + upperTicker,
+            adaptableApi.systemStatusApi.setSuccessSystemStatus(
+              'Intent Raised: ' + ticker,
               JSON.stringify(eventInfo.context),
             );
           },
