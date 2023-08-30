@@ -1,5 +1,5 @@
 import { ColDef } from '@ag-grid-community/core';
-import { TickerData } from './rowData';
+import { TickerData } from "./TickerData";
 
 export const defaultColDef: ColDef = {
   editable: true,
@@ -50,5 +50,15 @@ export const columnDefs: ColDef<TickerData>[] = [
       const fourth = Math.floor(Math.random() * 1000) - 0;
       return [first, second, third, fourth];
     },
+  },
+  {
+    headerName: 'MyArray',
+    colId: 'Array',
+    type: 'abColDefNumberArray',
+    field: 'Array',
+    editable: true,
+    floatingFilter: false,
+    filter: false,
+    resizable: true,
   },
 ];

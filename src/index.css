@@ -4,6 +4,7 @@
 
 @import '@ag-grid-community/styles/ag-grid.css';
 @import '@ag-grid-community/styles/ag-theme-alpine.css';
+@import '@ag-grid-community/styles/ag-theme-balham.css';
 @import '@adaptabletools/adaptable-react-aggrid/base.css';
 @import '@adaptabletools/adaptable-react-aggrid/themes/light.css';
 @import '@adaptabletools/adaptable-react-aggrid/themes/dark.css';

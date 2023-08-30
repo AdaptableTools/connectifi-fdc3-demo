@@ -15,7 +15,8 @@ import AdaptableReact, {
   HandleFdc3IntentResolutionContext,
 } from '@adaptabletools/adaptable-react-aggrid';
 import { columnDefs, defaultColDef } from './columnDefs';
-import { rowData, TickerData } from './rowData';
+import { rowData } from './rowData';
+import { TickerData } from './TickerData';
 import { agGridModules } from './agGridModules';
 import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
@@ -50,7 +51,7 @@ export const AdaptableAgGrid = () => {
       defaultColDef,
       columnDefs,
       rowData,
-      sideBar: 'adaptable',
+      sideBar: true,
       suppressMenuHide: true,
       enableRangeSelection: true,
       enableCharts: true,
@@ -161,7 +162,7 @@ export const AdaptableAgGrid = () => {
                           : null;
                       },
                       tooltip: (button, context) => {
-                        return `Get Price Info for ${context.rowData.Name}`;
+                        return `Get Price Info for ${context.rowData.Symbol}`;
                       },
                       buttonStyle: (button, context) => {
                         return priceMap.has(context.rowData.Symbol)
@@ -284,7 +285,7 @@ export const AdaptableAgGrid = () => {
       },
       settingsPanelOptions: {
         icon: 'ApplicationIcon',
-        title: 'Config Viewer',
+        title: 'AdapTable - Connectifi FDC3 Demo',
         navigation: {
           items: [
             'Demo Info',
@@ -344,13 +345,16 @@ export const AdaptableAgGrid = () => {
         Dashboard: {
           Revision,
           DashboardTitle: 'AdapTable - Connectifi',
+          Tabs:[{
+            Name: "FDC3 Demo", Toolbars:['Layout', 'SystemStatus', 'Alert', 'Query', 'Export']
+          }]
         },
         StatusBar: {
           Revision,
           StatusBars: [
             {
               Key: 'Center Panel',
-              StatusBarPanels: ['CellSummary'],
+              StatusBarPanels: ['Layout', 'CellSummary'],
             },
           ],
         },
@@ -371,6 +375,7 @@ export const AdaptableAgGrid = () => {
               Style: {
                 FontWeight: 'Bold',
               },
+              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -395,6 +400,7 @@ export const AdaptableAgGrid = () => {
               Style: {
                 FontWeight: 'Bold',
               },
+              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -416,6 +422,7 @@ export const AdaptableAgGrid = () => {
                   FractionDigits: 2,
                 },
               },
+              IncludeGroupedRows: true,
             },
 
             {
@@ -437,7 +444,7 @@ export const AdaptableAgGrid = () => {
                   Suffix: 'K',
                   FractionDigits: 2,
                 },
-              },
+              },IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -486,6 +493,7 @@ export const AdaptableAgGrid = () => {
                 },
               },
               CellAlignment: 'Right',
+              IncludeGroupedRows: true,
             },
           ],
         },
@@ -517,10 +525,10 @@ export const AdaptableAgGrid = () => {
         },
         Layout: {
           Revision,
-          CurrentLayout: 'DefaultLayout',
+          CurrentLayout: 'Table Layout',
           Layouts: [
             {
-              Name: 'DefaultLayout',
+              Name: 'Table Layout',
               Columns: [
                 'Ticker',
                 'Name',
@@ -538,6 +546,32 @@ export const AdaptableAgGrid = () => {
                 fdc3GetPriceColumn: 150,
                 Ticker: 110,
               },
+            },
+            {
+              Name: 'Sector Layout',
+              Columns: [
+                'Ticker',
+                'Name',
+                'Price',
+                'fdc3GetPriceColumn',
+                'Sector',
+                'Position',
+                'Contact',
+                'Email',
+                'SectorPnl',
+                'Performance',
+                'fdc3ActionColumn',
+              ],
+              ColumnWidthMap: {
+                fdc3GetPriceColumn: 150,
+                Ticker: 110,
+              },
+              AggregationColumns: {
+                Price: 'sum',
+                Position: 'sum',
+                SectorPnl: 'sum',
+              },
+              RowGroupedColumns: ['Sector'],
             },
           ],
         },
@@ -722,7 +756,7 @@ export const AdaptableAgGrid = () => {
               (window as any).api = adaptableApi;
             }}
           />
-          <div className="ag-theme-alpine flex-1">
+          <div className="ag-theme-balham flex-1">
             <AgGridReact gridOptions={gridOptions} modules={agGridModules} />
           </div>
         </>
