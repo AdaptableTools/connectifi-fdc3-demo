@@ -12,6 +12,7 @@ import AdaptableReact, {
   AdaptableOptions,
   CustomRenderContext,
   DashboardButtonContext,
+  HandleFdc3Context,
   HandleFdc3IntentResolutionContext,
   RowHighlightInfo,
 } from '@adaptabletools/adaptable-react-aggrid';
@@ -204,7 +205,8 @@ export const AdaptableAgGrid = () => {
             },
           },
           listensFor: ['ViewInstrument'],
-          handleIntent: (eventInfo) => {
+          handleIntent: (eventInfo: HandleFdc3Context) => {
+            const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
             const ticker = eventInfo.context.id?.ticker;
             const rowHighlightInfo: RowHighlightInfo = {
               primaryKeyValue: ticker,
@@ -214,11 +216,11 @@ export const AdaptableAgGrid = () => {
               },
             };
 
-            eventInfo.adaptableApi.gridApi.jumpToRow(ticker);
-            eventInfo.adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-            console.log(
-              `Received intent: ${eventInfo.intent}`,
-              eventInfo.context,
+            adaptableApi.gridApi.jumpToRow(ticker);
+            adaptableApi.gridApi.highlightRow(rowHighlightInfo);
+            adaptableApi.systemStatusApi.setInfoSystemStatus(
+              'Intent Listened: ' + ticker,
+              JSON.stringify(eventInfo.context),
             );
           },
         },
@@ -243,12 +245,15 @@ export const AdaptableAgGrid = () => {
           listensFor: ['fdc3.instrument'],
           handleContext: (eventInfo) => {
             if (eventInfo.context.type === 'fdc3.instrument') {
-              eventInfo.adaptableApi.filterApi.setColumnFilterForColumn(
-                'Ticker',
-                {
-                  PredicateId: 'Is',
-                  PredicateInputs: [eventInfo.context.id?.ticker],
-                },
+              const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
+              const ticker = eventInfo.context.id?.ticker;
+              adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
+                PredicateId: 'Is',
+                PredicateInputs: [eventInfo.context.id?.ticker],
+              });
+              adaptableApi.systemStatusApi.setSuccessSystemStatus(
+                'Context Listened: ' + ticker,
+                JSON.stringify(eventInfo.context),
               );
             }
           },
