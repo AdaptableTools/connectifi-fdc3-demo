@@ -208,13 +208,13 @@ export const AdaptableAgGrid = () => {
           handleIntent: (eventInfo: HandleFdc3Context) => {
             const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
             const ticker = eventInfo.context.id?.ticker;
-       //     const upperTicker: number = ticker.toUpperCase()
+            //     const upperTicker: number = ticker.toUpperCase()
             const rowHighlightInfo: RowHighlightInfo = {
               primaryKeyValue: ticker,
               timeout: 5000,
               highlightStyle: {
                 BackColor: 'Yellow',
-                ForeColor: 'Black'
+                ForeColor: 'Black',
               },
             };
 
@@ -344,8 +344,13 @@ export const AdaptableAgGrid = () => {
                 return `
                   <h1>AdapTable & Connectifi FDC3 Demo</h1>
                   <br/>
-                  <p>TODO - describing what the app does</p>
-                
+                 <p>This demo app illustrates some of the FDC3 features in AdapTable including:</p>
+                 <br/>
+                 <p>Raising FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively</p>
+                 <br/>
+                 <p>Raising Custom FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively</p>
+                 <br/>
+                 <p>Learn more about <a href="https://docs.adaptabletools.com/guide/handbook-fdc3">AdapTable's FDC3 capabilites</a> </p>
                 `;
               } else {
                 console.log('unmount');
