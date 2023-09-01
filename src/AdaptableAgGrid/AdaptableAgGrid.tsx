@@ -299,7 +299,7 @@ export const AdaptableAgGrid = () => {
             },
             buttonStyle: {
               tone: 'info',
-              variant: 'raised',
+              variant: 'outlined',
             },
           },
         ],
