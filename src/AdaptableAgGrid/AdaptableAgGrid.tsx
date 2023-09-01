@@ -220,8 +220,8 @@ export const AdaptableAgGrid = () => {
 
             adaptableApi.gridApi.jumpToRow(ticker);
             adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-            adaptableApi.systemStatusApi.setSuccessSystemStatus(
-              'Intent Raised: ' + ticker,
+            adaptableApi.systemStatusApi.setInfoSystemStatus(
+              'Intent Received: ' + ticker,
               JSON.stringify(eventInfo.context),
             );
           },
@@ -254,7 +254,7 @@ export const AdaptableAgGrid = () => {
                 PredicateInputs: [eventInfo.context.id?.ticker],
               });
               adaptableApi.systemStatusApi.setSuccessSystemStatus(
-                'Context Listened: ' + ticker,
+                'Context Received: ' + ticker,
                 JSON.stringify(eventInfo.context),
               );
             }
@@ -346,11 +346,18 @@ export const AdaptableAgGrid = () => {
                   <br/>
                  <p>This demo app illustrates some of the FDC3 features in AdapTable including:</p>
                  <br/>
-                 <p>Raising FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively</p>
+                 <p>Raising FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively.</p>
                  <br/>
-                 <p>Raising Custom FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively</p>
+                 <p>Raising Custom FDC3 Intents - the Get Price button in the "Get Price" Column calls the Custom GetPrice Intent and displays the result.</p>
+                 <br/>
+                 <p>Broadcasting Context - the Green "Broadcast Instrument" button in the "FDC3 Actions" Column broadcasts Context about the current Instrument.</p>
+                 <br/>
+                 <p><b>Listening to Raised Intents</b> - if the ViewInstrument intent is received, the app jumps to the row and highlights it in yellow (it also outputs the Context as a System Status message)</p>
+                 <br/>
+                 <p><b>Listening to Broacdast Context</b> - if broadcast Instrument Context is received, the app filters to that Instrument (it also outputs the Context as a System Status message)</p>
                  <br/>
                  <p>Learn more about <a href="https://docs.adaptabletools.com/guide/handbook-fdc3">AdapTable's FDC3 capabilites</a> </p>
+                 <p><ul><li><i>hello</i></li></ul></p>
                 `;
               } else {
                 console.log('unmount');
