@@ -347,22 +347,22 @@ export const AdaptableAgGrid = () => {
                   <h1>AdapTable & Connectifi FDC3 Demo</h1>
                   <br/>
                   <div style="font-size: small;">
-                 <p>This demo app illustrates some of the FDC3 features in AdapTable including:</p>
+                 <p>This demo leverages the Connectifi Sandbox to highlight some AdapTable FDC3 features including:</p>
                  <br/>
                  <p style="color: lightgreen">Raising FDC3 Intents</p>
-                 <p>The Blue, Orange and Red buttons in the "FDC3 Actions" column raise the <i>ViewChart</i>, <i>ViewNews</i> and <i>ViewInstruments</i> Intents respectively.</p>
+                 <p>The Blue, Orange and Red buttons in the "FDC3 Actions" column raise the <i>ViewChart</i>, <i>ViewNews</i> and <i>ViewInstrument</i> Intents respectively.</p>
                  <br/>
                  <p style="color: lightgreen">Broadcasting Context</p>
                  <p>The Green "Broadcast Instrument" button in the "FDC3 Actions" Column broadcasts Context about the current Instrument.</p>
                  <br/>
                  <p style="color: lightgreen">Listening to Raised Intents</p>
-                 <p>When the ViewInstrument intent is received, the app jumps to the row and highlights it in yellow</p>
+                 <p>When the <i>ViewInstrument</i> intent is received, the app jumps to the row and highlights it in yellow</p>
                  <br/>
                  <p style="color: lightgreen">Listen to Custom FDC3 Intents</p>
                  <p>The button in the "Get Price" Column calls the Custom <i>GetPrice</i> Intent and displays the result</p>
                  <br/>
                  <p style="color: lightgreen">Listening to Broacdast Context</p>
-                 <p>When broadcast Instrument Context is received, the app filters to that Instrument</p>
+                 <p>When broadcast Instrument Context is received, the app filters to that <i>Instrument</i></p>
                  <br/>
                  <p><i>(Note: We output content of Intents and Broadcasts we listen to as System Status messages)</i></p>
                  <br/>
