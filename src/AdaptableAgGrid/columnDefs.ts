@@ -1,5 +1,5 @@
 import { ColDef } from '@ag-grid-community/core';
-import { TickerData } from "./TickerData";
+import { TickerData } from './TickerData';
 
 export const defaultColDef: ColDef = {
   editable: true,
