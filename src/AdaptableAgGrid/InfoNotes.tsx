@@ -50,9 +50,10 @@ export const InfoNotes = () => {
           </i>
         </p>
         <br />
-        <p className={'text-sky-400 underline'}>
+        <p>
           Learn more about{' '}
           <a
+            className={'text-sky-400 underline'}
             href="https://docs.adaptabletools.com/guide/handbook-fdc3"
             target="_new"
           >
