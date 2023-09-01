@@ -10,6 +10,7 @@ import AdaptableReact, {
   AdaptableApi,
   AdaptableButton,
   AdaptableOptions,
+  AdaptableReadyInfo,
   CustomRenderContext,
   DashboardButtonContext,
   HandleFdc3Context,
@@ -280,9 +281,10 @@ export const AdaptableAgGrid = () => {
       },
 
       dashboardOptions: {
+        buttonsLocation: 'left',
         customDashboardButtons: [
           {
-            label: 'Info',
+            label: ' Demo Info',
             icon: {
               name: 'info',
             },
@@ -295,8 +297,8 @@ export const AdaptableAgGrid = () => {
               );
             },
             buttonStyle: {
-              tone: 'none',
-              variant: 'outlined',
+              tone: 'neutral',
+              variant: 'text',
             },
           },
         ],
@@ -344,20 +346,28 @@ export const AdaptableAgGrid = () => {
                 return `
                   <h1>AdapTable & Connectifi FDC3 Demo</h1>
                   <br/>
+                  <div style="font-size: small;">
                  <p>This demo app illustrates some of the FDC3 features in AdapTable including:</p>
                  <br/>
-                 <p>Raising FDC3 Intents - the Blue, Orange and Red buttons in the "FDC3 Actions" column raise the ViewChart, ViewNews and ViewInstruments Intents respectively.</p>
+                 <p style="color: lightgreen">Raising FDC3 Intents</p>
+                 <p>The Blue, Orange and Red buttons in the "FDC3 Actions" column raise the <i>ViewChart</i>, <i>ViewNews</i> and <i>ViewInstruments</i> Intents respectively.</p>
                  <br/>
-                 <p>Raising Custom FDC3 Intents - the Get Price button in the "Get Price" Column calls the Custom GetPrice Intent and displays the result.</p>
+                 <p style="color: lightgreen">Broadcasting Context</p>
+                 <p>The Green "Broadcast Instrument" button in the "FDC3 Actions" Column broadcasts Context about the current Instrument.</p>
                  <br/>
-                 <p>Broadcasting Context - the Green "Broadcast Instrument" button in the "FDC3 Actions" Column broadcasts Context about the current Instrument.</p>
+                 <p style="color: lightgreen">Listening to Raised Intents</p>
+                 <p>When the ViewInstrument intent is received, the app jumps to the row and highlights it in yellow</p>
                  <br/>
-                 <p><b>Listening to Raised Intents</b> - if the ViewInstrument intent is received, the app jumps to the row and highlights it in yellow (it also outputs the Context as a System Status message)</p>
+                 <p style="color: lightgreen">Listen to Custom FDC3 Intents</p>
+                 <p>The button in the "Get Price" Column calls the Custom <i>GetPrice</i> Intent and displays the result</p>
                  <br/>
-                 <p><b>Listening to Broacdast Context</b> - if broadcast Instrument Context is received, the app filters to that Instrument (it also outputs the Context as a System Status message)</p>
+                 <p style="color: lightgreen">Listening to Broacdast Context</p>
+                 <p>When broadcast Instrument Context is received, the app filters to that Instrument</p>
                  <br/>
-                 <p>Learn more about <a href="https://docs.adaptabletools.com/guide/handbook-fdc3">AdapTable's FDC3 capabilites</a> </p>
-                 <p><ul><li><i>hello</i></li></ul></p>
+                 <p><i>(Note: We output content of Intents and Broadcasts we listen to as System Status messages)</i></p>
+                 <br/>
+                 <p style="color: lightblue; text-decoration: underline">Learn more about <a href="https://docs.adaptabletools.com/guide/handbook-fdc3" target="_new">AdapTable's FDC3 capabilites</a> </p>
+                 </div>
                 `;
               } else {
                 console.log('unmount');
@@ -552,24 +562,26 @@ export const AdaptableAgGrid = () => {
           CurrentLayout: 'Table Layout',
           Layouts: [
             {
+              ColumnWidthMap: {
+                fdc3GetPriceColumn: 100,
+                Position: 100,
+                Ticker: 110,
+                Price: 110,
+                SectorPnl: 110,
+                Sector: 150,
+              },
               Name: 'Table Layout',
               Columns: [
                 'Ticker',
                 'Name',
                 'Price',
                 'fdc3GetPriceColumn',
-                'Sector',
                 'Position',
-                'Contact',
-                'Email',
+                'fdc3ActionColumn',
+                'Sector',
                 'SectorPnl',
                 'Performance',
-                'fdc3ActionColumn',
               ],
-              ColumnWidthMap: {
-                fdc3GetPriceColumn: 150,
-                Ticker: 110,
-              },
             },
             {
               Name: 'Sector Layout',
@@ -580,16 +592,14 @@ export const AdaptableAgGrid = () => {
                 'fdc3GetPriceColumn',
                 'Sector',
                 'Position',
-                'Contact',
-                'Email',
                 'SectorPnl',
                 'Performance',
                 'fdc3ActionColumn',
               ],
-              ColumnWidthMap: {
-                fdc3GetPriceColumn: 150,
-                Ticker: 110,
-              },
+              //  ColumnWidthMap: {
+              //    fdc3GetPriceColumn: 150,
+              //    Ticker: 55,
+              //  },
               AggregationColumns: {
                 Price: 'sum',
                 Position: 'sum',
@@ -774,10 +784,15 @@ export const AdaptableAgGrid = () => {
                 root?.unmount();
               };
             }}
-            onAdaptableReady={({ adaptableApi }) => {
+            onAdaptableReady={(readyInfo: AdaptableReadyInfo) => {
               // save a reference to adaptable api
-              adaptableApiRef.current = adaptableApi;
-              (window as any).api = adaptableApi;
+              adaptableApiRef.current = readyInfo.adaptableApi;
+
+              (window as any).api = readyInfo.adaptableApi;
+
+              setTimeout(() => {
+                //   readyInfo.gridOptions.columnApi?.autoSizeAllColumns();
+              }, 200);
             }}
           />
           <div className="ag-theme-balham flex-1">

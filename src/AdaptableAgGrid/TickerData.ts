@@ -4,5 +4,4 @@ export interface TickerData {
   Symbol: string;
   Price: number;
   Position: number;
-  Array?: any;
 }
