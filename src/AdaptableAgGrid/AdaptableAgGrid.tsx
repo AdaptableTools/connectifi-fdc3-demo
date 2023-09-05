@@ -218,7 +218,7 @@ export const AdaptableAgGrid = () => {
             },
           },
 
-          // listen for the `ViewInstrument` Intent
+          // listen for the 'fdc3.instrument' Context
           listensFor: ['ViewInstrument'],
 
           // handle the Intent received

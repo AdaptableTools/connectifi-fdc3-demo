@@ -1,6 +1,8 @@
 
 ## Introduction
 
+<img src="./images/fdc3-app-demo.png"  width="663" height="344">
+
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen for Intents and broadcast and listen for Context.
@@ -242,7 +244,7 @@ In this demo we listen for the 'fdc3.instrument' Context and we then:
 
 
 ```
-// listen for the `ViewInstrument` Context
+// listen for the 'fdc3.instrument' Context
 listensFor: ['fdc3.instrument'],
 
 // handle the Context received
