@@ -277,7 +277,7 @@ These leverage [AdapTable Action Columns](https://docs.adaptabletools.com/guide/
 
 There are 2 ways to define FDC3 actins Buttons:
 
-- Provide a Button definition
+**1. Provide a Button definition**
 
 When a Button definition is provided, AdapTable will render that button in the default FDC3 Action Column.
 
@@ -290,7 +290,7 @@ actionColumnDefaultConfiguration: {
 },
 ```
 
-- Providing a bespoke Action Column Definition
+**2. Providing a bespoke Action Column Definition**
 
 Instead of simply providing buttons, developers can define a full FDC3 Action Column.
 
@@ -362,7 +362,24 @@ Layout: {
 
 The demo contains a few other AdapTable [Predefined Config objects](https://docs.adaptabletools.com/guide/reference-predefined-config) and [Adaptable Options properties](https://docs.adaptabletools.com/guide/reference-options-overview) to create a more pleasing visual effect.   These include:
 
-- 
+- Theme Predefined Config - set app to Dark Theme
+- Dashboard Predefined Config - set the app's Title and provided some buttons
+- Status Bar Predefined Confg - added Layout and Cell Summary panels
+- Format Column Predefined Confg - created various formats and styles including:
+  - bah
+  - blh
+- Calculated Column Predefined Confg - defined a Calculated Column called `Sector Pnl` which aggregates all the Postions, grouped by Sector
+- Layout Predefined Confg - created 2 Layouts - a standard `Table Layout` and a `Sector Layout` with Row Grouping and Aggregations
+- Styled Column Predefined Confg - created xxxx
+  - blah
+  - blah   
+- Menu Options - provided an implementation for `showAdaptableContextMenu` so only one item appears in Ticker Column's context menu
+- Setting Panel Options - added a Demo Info panel which describes this app
+- Dashboard Options - added an Info button which opens the Demo Info panel described above
+
+
+
+
 
 ### Putting It All Together
 
