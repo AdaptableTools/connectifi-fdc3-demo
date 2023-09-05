@@ -90,8 +90,9 @@ export const AdaptableAgGrid = () => {
       adaptableStateKey: 'adaptable_connectifi_fdc3_demo',
       fdc3Options: {
         enableLogging: true,
-        // Provide a single Instrument Mapping
-        // Use the `Name` column and the `Symbol` field
+        // Create a single Data Mapping - to FDC3 Instrument Context
+        // Use `Name` column (defined by '_colId') as the Instrument Name
+        // Use the `Symbol` field (defined by '_field') to map to Ticker (in `id` prop)
         gridDataContextMapping: {
           'fdc3.instrument': {
             name: '_colId.Name',
@@ -103,7 +104,8 @@ export const AdaptableAgGrid = () => {
         intents: {
           raises: {
             // Raise 3 Intents: `ViewChart`, `ViewNews` and `ViewInstument`
-            // Create an FDC3 Action Button for all 3 - each of which will be rendered in default FDC3 Action Column
+            // Create an FDC3 Action Button for all 3 Intents
+            // Each button will be rendered in the default FDC3 Action Column
             // Note: All 3 Intents use the mapping that was created in `gridDataContextMapping`
             ViewChart: [
               {

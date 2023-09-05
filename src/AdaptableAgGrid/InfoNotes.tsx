@@ -10,20 +10,31 @@ export const InfoNotes = () => {
       <br />
       <div className={'text-sm'}>
         <p>
-          This app leverages the Connectifi sandbox (and uses random, meaningless dummy data) to illustrate some of
-          AdapTable's FDC3 features:
-        </p>
-        <br />
-        <p>
-          Learn more about{' '}
-          <a
-            className={'text-sky-400 underline'}
-            href="https://docs.adaptabletools.com/guide/handbook-fdc3"
-            target="_new"
-          >
-            AdapTable's FDC3 capabilites
-          </a>{' '}
+          <i>
+            (See{' '}
+            <a
+              className={'text-sky-400 underline'}
+              href="https://github.com/AdaptableTools/connectifi-fdc3-demo"
+              target="_new"
+            >
+              the demo code and 'Read Me'
+            </a>{' '}
+            or learn about{' '}
+            <a
+              className={'text-sky-400 underline'}
+              href="https://docs.adaptabletools.com/guide/handbook-fdc3"
+              target="_new"
+            >
+              AdapTable's FDC3 capabilites
+            </a>
+          </i>
+          )
         </p>{' '}
+        <br />{' '}
+        <p>
+          This app leverages the Connectifi sandbox (using meaningless dummy
+          data) to illustrate some of AdapTable's FDC3 features, including:
+        </p>
         <br />
         <p className={'text-green-400'}>
           Raising FDC3 Intents (using buttons in the "FDC3 Actions" column)
@@ -50,7 +61,7 @@ export const InfoNotes = () => {
         </p>
         <br />
         <p className={'text-green-400'}>
-          Listen for Custom FDC3 Intents (using buttons in the Get Price" column)
+          Listening for Custom FDC3 Intents (using button in "Get Price" column)
         </p>
         <p>
           The button in the column calls the Custom <i>GetPrice</i> Intent and
