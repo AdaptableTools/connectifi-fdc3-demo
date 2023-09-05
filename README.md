@@ -399,8 +399,11 @@ $ npm run dev
 # yarn run dev
 ```
 
+## More about AdapTable
 
-## Licences
+AdapTable is a product provided by Adaptable Tools - visit our [Website](http://www.adaptabletools.com) for more information.
+
+### Licences
 
 An [AdapTable Licence](https://docs.adaptabletools.com/guide/licensing) provides access to all product features as well as quarterly updates and enhancements through the lifetime of the licence, comprehensive support, and access to all 3rd party libraries.
 
@@ -410,16 +413,13 @@ We can make a Trial Licence available for a short period of time to allow you to
 
 Please contact [`sales@adaptabletools.com`](mailto:sales@adaptabletools.com) for more information.
 
-## Help
+### Help
 
 Developers can learn how to access AdapTable programmatically at [AdapTable Documentation](https://docs.adaptabletools.com).  
 
 Here you can see a large number of AdapTable demos each showing a different feature, function or option in AdapTable.
 
-## Demo
+### Demos
 
 To see AdapTable in action visit our [Demo Site](https://www.adaptabletools.com/demos) which contains a few larger demos.
 
-## More Information
-
-General information about Adaptable Tools is available at our [Website](http://www.adaptabletools.com) 
