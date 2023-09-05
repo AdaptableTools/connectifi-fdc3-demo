@@ -11,9 +11,9 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 ## The Demo App
 
-The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how to use the FDC3 capabilities in AdapTable to interop with other applications and widgets.
+The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how the FDC3 capabilities in AdapTable can interop with other applications and widgets.
 
-> The data in the app is purely meaningless **dummy data** for illustration purposes; only the Tickers are real.
+> The data in the app is purely meaningless **dummy data** for illustration purposes; only the Tickers are real
 
 The app primarily uses the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument) to manage Intents and Context, but all FDC3 context types are available out of the box in AdapTable.
 
