@@ -49,7 +49,7 @@ fdc3Options: {
 }
 ```
 
-### Intents
+### FDC3 Intents
 
 AdapTable allows users to both **raise** and **listen to** FDC3 Intents.
 
@@ -57,7 +57,7 @@ AdapTable allows users to both **raise** and **listen to** FDC3 Intents.
 
 #### Raising Intents
 
-Intents are raised using the ```raises``` property.
+Intents are raised using the `raises` property (in `intents` section)
 
 It contains a list of the Intents being raised with the key being the name of the Intent (e.g. ```ViewInstrument```).
 
@@ -74,9 +74,9 @@ In this demo we raise 3 FDC3 Intents and provide an Action Button definition for
 
 > We also raise a Custom Intent which is discussed below
 
-- ViewChart
-- ViewNews
-- ViewInstrument
+- `ViewChart`
+- `ViewNews`
+- `ViewInstrument`
 
 ```
 raises: {
