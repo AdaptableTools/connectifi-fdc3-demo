@@ -467,6 +467,8 @@ The demo contains a few other AdapTable [Predefined Config objects](https://docs
 
 ## The Tech Bits
 
+### License Keys
+
 Provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
 - VITE_ADAPTABLE_LICENSE_KEY
 - VITE_AG_GRID_LICENSE_KEY
