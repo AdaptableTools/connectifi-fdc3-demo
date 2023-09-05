@@ -11,7 +11,6 @@ import AdaptableReact, {
   AdaptableButton,
   AdaptableOptions,
   AdaptableReadyInfo,
-  CustomRenderContext,
   DashboardButtonContext,
   HandleFdc3Context,
   HandleFdc3IntentResolutionContext,
@@ -82,13 +81,17 @@ export const AdaptableAgGrid = () => {
 
   const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
-      licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
+      licenseKey:
+        'StartDate=2021-10-20|EndDate=2024-01-01|Owner=AdaptableDocs|Type=development|DeveloperCount=1|Ref=AdaptableLicense-application|TS=1634732419321|C=869236154,2499530569,2954009380,2212294583,3235258666,1892324866,3606117680,1143328342',
+
       primaryKey: 'Ticker',
       userName: 'AdaptableUser',
       adaptableId: 'Adaptable Connectifi FDC3 Demo',
       adaptableStateKey: 'adaptable_connectifi_fdc3_demo',
       fdc3Options: {
         enableLogging: true,
+        // Provide a single Instrument Mapping
+        // Use the `Name` column and the `Symbol` field
         gridDataContextMapping: {
           'fdc3.instrument': {
             name: '_colId.Name',
@@ -99,6 +102,9 @@ export const AdaptableAgGrid = () => {
         },
         intents: {
           raises: {
+            // Raise 3 Intents: `ViewChart`, `ViewNews` and `ViewInstument`
+            // Create an FDC3 Action Button for all 3 - each of which will be rendered in default FDC3 Action Column
+            // Note: All 3 Intents use the mapping that was created in `gridDataContextMapping`
             ViewChart: [
               {
                 contextType: 'fdc3.instrument',
@@ -206,11 +212,17 @@ export const AdaptableAgGrid = () => {
               ],
             },
           },
+
+          // listen for the `ViewInstrument` Intent
           listensFor: ['ViewInstrument'],
-          handleIntent: (eventInfo: HandleFdc3Context) => {
-            const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-            const ticker = eventInfo.context.id?.ticker;
+
+          // handle the Intent received
+          handleIntent: (handleFDC3Context: HandleFdc3Context) => {
+            const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
+            const ticker = handleFDC3Context.context.id?.ticker;
             const upperTicker = ticker.toUpperCase();
+
+            // Create a Row Highlight object and then jump to row and highlight it
             const rowHighlightInfo: RowHighlightInfo = {
               primaryKeyValue: upperTicker,
               timeout: 5000,
@@ -219,16 +231,21 @@ export const AdaptableAgGrid = () => {
                 ForeColor: 'Black',
               },
             };
-
             adaptableApi.gridApi.jumpToRow(upperTicker);
             adaptableApi.gridApi.highlightRow(rowHighlightInfo);
+
+            // Display an `Info` System Status Message with details of the Intent received
             adaptableApi.systemStatusApi.setInfoSystemStatus(
               'Intent Received: ' + upperTicker,
-              JSON.stringify(eventInfo.context),
+              JSON.stringify(handleFDC3Context.context),
             );
           },
         },
         contexts: {
+          // Broadcast FDC3 Instrument in 2 ways:
+          // using a Context Menu Item in Ticker and Name columns
+          // via a FDC3 Action Button (which will be rendered in the default FDC3 Action Column)
+          // Note: The Context uses the mapping that was created in `gridDataContextMapping`
           broadcasts: {
             'fdc3.instrument': {
               contextMenu: {
@@ -246,22 +263,32 @@ export const AdaptableAgGrid = () => {
               },
             },
           },
+
+          // listen for the `ViewInstrument` Context
           listensFor: ['fdc3.instrument'],
-          handleContext: (eventInfo) => {
-            if (eventInfo.context.type === 'fdc3.instrument') {
-              const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-              const ticker = eventInfo.context.id?.ticker;
+
+          // handle the Context received
+          handleContext: (handleFDC3Context: HandleFdc3Context) => {
+            if (handleFDC3Context.context.type === 'fdc3.instrument') {
+              const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
+              const ticker = handleFDC3Context.context.id?.ticker;
+
+              // Filter the Grid using the received Ticker
               adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
                 PredicateId: 'Is',
-                PredicateInputs: [eventInfo.context.id?.ticker],
+                PredicateInputs: [handleFDC3Context.context.id?.ticker],
               });
+
+              // Display a `Success` System Status Message with details of the Context received
               adaptableApi.systemStatusApi.setSuccessSystemStatus(
                 'Context Received: ' + ticker,
-                JSON.stringify(eventInfo.context),
+                JSON.stringify(handleFDC3Context.context),
               );
             }
           },
         },
+
+        // Narrow width of Default Action Column
         actionColumnDefaultConfiguration: {
           width: 150,
         },
@@ -544,12 +571,12 @@ export const AdaptableAgGrid = () => {
                 'Ticker',
                 'Name',
                 'Price',
-                'fdc3GetPriceColumn',
+                'fdc3GetPriceColumn', // Bespoke FDC3 Action Column
                 'Position',
-                'fdc3ActionColumn',
                 'Sector',
                 'SectorPnl',
                 'Performance',
+                'fdc3ActionColumn', // Default FDC3 Action Column
               ],
             },
             {
@@ -558,12 +585,12 @@ export const AdaptableAgGrid = () => {
                 'Ticker',
                 'Name',
                 'Price',
-                'fdc3GetPriceColumn',
+                'fdc3GetPriceColumn', // Bespoke FDC3 Action Column
                 'Sector',
                 'Position',
                 'SectorPnl',
                 'Performance',
-                'fdc3ActionColumn',
+                'fdc3ActionColumn', // Default FDC3 Action Column
               ],
               //  ColumnWidthMap: {
               //    fdc3GetPriceColumn: 150,

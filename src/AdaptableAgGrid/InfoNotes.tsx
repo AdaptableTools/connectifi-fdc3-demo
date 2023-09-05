@@ -10,7 +10,7 @@ export const InfoNotes = () => {
       <br />
       <div className={'text-sm'}>
         <p>
-          This app leverages the Connectifi sandbox to illustrate some
+          This app leverages the Connectifi sandbox (and uses random, meaningless dummy data) to illustrate some of
           AdapTable's FDC3 features:
         </p>
         <br />
@@ -43,21 +43,21 @@ export const InfoNotes = () => {
         </p>
         <p>Green button - Broadcasts Context about the row's Instrument</p>
         <br />
-        <p className={'text-green-400'}>Listening to Raised Intents</p>
+        <p className={'text-green-400'}>Listening for Raised Intents</p>
         <p>
           When <i>ViewInstrument</i> Intent is received, app jumps to the row
           and highlights it in yellow
         </p>
         <br />
         <p className={'text-green-400'}>
-          Listen to Custom FDC3 Intents (using buttons in the Get Price" column)
+          Listen for Custom FDC3 Intents (using buttons in the Get Price" column)
         </p>
         <p>
           The button in the column calls the Custom <i>GetPrice</i> Intent and
           displays the result
         </p>
         <br />
-        <p className={'text-green-400'}>Listening to Broacdast Context</p>
+        <p className={'text-green-400'}>Listening for Broacdast Context</p>
         <p>
           When broadcast <i>Instrument Context</i> is received, the app filters
           the Grid to that Instrument
@@ -65,7 +65,7 @@ export const InfoNotes = () => {
         <br />
         <p>
           <i>
-            (We output content of Intents and Broadcasts we listen to as System
+            (We output content of Intents and Broadcasts we listen for as System
             Status messages)
           </i>
         </p>
