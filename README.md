@@ -1,7 +1,7 @@
 
 ## Introduction
 
-<img src="images/fdc3-app-demo.png"  width="663" height="344">
+<img src="images/fdc3-app-demo.jpeg"  width="663" height="344">
 
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
