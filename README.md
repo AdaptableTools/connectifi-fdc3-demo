@@ -5,9 +5,9 @@ This demo app illustrates the some AdapTable FDC3 2.0 featues using the [Connect
 
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
 
-It requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher).
+> The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
-## The Demo
+## The Demo App
 
 The app leverages the Connectifi Sandbox to show how to use the FDC3 capabilities in AdapTable to interop with other applications it widgets.
 
@@ -15,7 +15,14 @@ The app leverages the Connectifi Sandbox to show how to use the FDC3 capabilitie
 
 The app primarily uses the Instrument Context to manage intents and broadcasts, but all FDC3 context types are available out of the box in AdapTable.
 
-In the app users are able **
+In the app users are able to:
+
+- Raise FDC3 Intents
+- Listen for FDC3 Intents
+- Broadcast FDC3 Context
+- Listen for FDC3 Intetns
+- Raise a Custom FDC3 Intent
+- Define FDC3 Action Buttons, Action Columns and Context Menu Items
 
 ## AdapTable FDC3 
 
