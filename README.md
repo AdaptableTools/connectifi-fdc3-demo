@@ -5,9 +5,24 @@ This demo app illustrates the some AdapTable FDC3 2.0 featues using the [Connect
 
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
 
-It requires AdapTable Version 16.0.3 and higher.
+It requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher).
 
 ## The Demo
+
+The app leverages the Connectifi Sandbox to show how to use the FDC3 capabilities in AdapTable to interop with other applications it widgets.
+
+> The data in the app is meaningless **dummy data**; only the Tickers are real.
+
+The app primarily uses the Instrument Context to manage intents and broadcasts, but all FDC3 context types are available out of the box in AdapTable.
+
+In the app users are able **
+
+## AdapTable FDC3 
+
+Using FDC3 in AdapTable is a 2-step process:
+
+1. FDC3 Mappings are defined - essentially creating context using DataGrid fields and columns
+2. Intents are Raised (and listened to) and Contexts are Broadcast (and listened to) using these Mappings.
 
 ## The Tech Bits
 
@@ -15,9 +30,9 @@ You have to provide the AdapTable and AG Grid licenses as environment variables 
 - VITE_ADAPTABLE_LICENSE_KEY
 - VITE_AG_GRID_LICENSE_KEY
 
-### Install
+### Installing
 
-> This project uses [node](http://nodejs.org) and a package manager ([npm](https://npmjs.com), [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)). Go check them out if you don't have them locally installed.
+> This project uses [node](http://nodejs.org) and a package manager ([npm](https://npmjs.com), [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)).
 
 ```sh
 $ cd path-to-your-project
@@ -28,7 +43,7 @@ $ npm install
 ```
 ### Usage
 
-Let's run!
+To run:
 
 ```sh
 $ npm run dev
