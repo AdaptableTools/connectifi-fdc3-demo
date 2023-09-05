@@ -70,114 +70,62 @@ It also contains behaviour this is typically either:
 
 > AdapTable provides the `defaultFDC3` property to show default Icons (and tooltips) in the buttons
 
+In this demo we raise 3 FDC3 Intents and provide an Action Button definition for each:
+
+> We also raise a Custom Intent which is discussed below
+
+- ViewChart
+- ViewNews
+- ViewInstrument
+
+```
 raises: {
-            ViewChart: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewChartBtn',
-                  tooltip: 'Raise: ViewChart',
-                  icon: '_defaultFdc3',
-                  buttonStyle: {
-                    tone: 'info',
-                    variant: 'outlined',
-                  },
-                },
-              },
-            ],
-            ViewNews: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewNewsBtn',
-                  tooltip: 'Raise: ViewNews',
-                  icon: '_defaultFdc3',
-                  buttonStyle: {
-                    variant: 'outlined',
-                    tone: 'warning',
-                  },
-                },
-              },
-            ],
-            ViewInstrument: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewInstrumentBtn',
-                  tooltip: 'Raise: ViewInstrument',
-                  icon: {
-                    name: 'visibility-on',
-                  },
-                  buttonStyle: {
-                    tone: 'error',
-                    variant: 'outlined',
-                  },
-                },
-              },
-            ],
-            custom: {
-              GetPrice: [
-                {
-                  contextType: 'fdc3.instrument',
-                  actionColumn: {
-                    columnId: 'fdc3GetPriceColumn',
-                    friendlyName: 'Get Price',
-                    button: {
-                      id: 'GetPriceButton',
-                      label: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
-                        return !!price ? `$ ${price}` : 'Get Price';
-                      },
-                      icon: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
-                        return !price
-                          ? {
-                              name: 'quote',
-                            }
-                          : null;
-                      },
-                      tooltip: (button, context) => {
-                        return `Get Price Info for ${context.rowData.Symbol}`;
-                      },
-                      buttonStyle: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol)
-                          ? {
-                              tone: 'success',
-                              variant: 'text',
-                            }
-                          : {
-                              tone: 'info',
-                              variant: 'outlined',
-                            };
-                      },
-                      disabled: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol);
-                      },
-                    },
-                  },
-                  handleIntentResolution: async (
-                    params: HandleFdc3IntentResolutionContext,
-                  ) => {
-                    const intentResult =
-                      await params.intentResolution.getResult();
-                    if (!intentResult?.type) {
-                      return;
-                    }
-                    const contextData = intentResult as Fdc3CustomContext;
-                    const ticker = contextData.id?.ticker;
-                    const price = contextData.price;
-                    if (ticker) {
-                      priceMap.set(ticker, price);
-                    }
-                    // @ts-ignore
-                    params.adaptableApi.gridApi.refreshCells(null, [
-                      'fdc3GetPriceColumn',
-                    ]);
-                  },
-                },
-              ],
-            },
+    ViewChart: [
+      {
+        contextType: 'fdc3.instrument',
+        actionButton: {
+          id: 'viewChartBtn',
+          tooltip: 'Raise: ViewChart',
+          icon: '_defaultFdc3',
+          buttonStyle: {
+            tone: 'info',
+            variant: 'outlined',
           },
+        },
+      },
+    ],
+    ViewNews: [
+      {
+        contextType: 'fdc3.instrument',
+        actionButton: {
+          id: 'viewNewsBtn',
+          tooltip: 'Raise: ViewNews',
+          icon: '_defaultFdc3',
+          buttonStyle: {
+            variant: 'outlined',
+            tone: 'warning',
+          },
+        },
+      },
+    ],
+    ViewInstrument: [
+      {
+        contextType: 'fdc3.instrument',
+        actionButton: {
+          id: 'viewInstrumentBtn',
+          tooltip: 'Raise: ViewInstrument',
+          icon: {
+            name: 'visibility-on',
+          },
+          buttonStyle: {
+            tone: 'error',
+            variant: 'outlined',
+          },
+        },
+      },
+    ],
+  },
+```
 
 ## Custom FDC3
 
