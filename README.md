@@ -80,6 +80,8 @@ In this demo we raise 3 FDC3 Intents and provide an Action Button definition for
 
 ```
 raises: {
+    // Raise 3 Intents: ViewChart, ViewNews and View Instument
+    // Create an FDC3 Action Button for all 3 which will be put in default FDC3 Action Column
     ViewChart: [
       {
         contextType: 'fdc3.instrument',
@@ -139,7 +141,10 @@ In this demo we listen for the `ViewInstrument` Intent and we then:
 - send a System Status message displaying the Context received:
 
 ```
+// listen for the `ViewInstrument` Intent
 listensFor: ['ViewInstrument'],
+
+// handle the Intent
 handleIntent: (handleContext: HandleFdc3Context) => {
   const adaptableApi: AdaptableApi = handleContext.adaptableApi;
   const ticker = handleContext.context.id?.ticker;
@@ -166,6 +171,10 @@ handleIntent: (handleContext: HandleFdc3Context) => {
 
 
 ### FDC3 Context
+
+AdapTable allows users to Broadcast (and listen to FDC3 Context).
+
+
 
 #### Broadcasting Context
 
