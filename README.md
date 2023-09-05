@@ -63,7 +63,7 @@ It contains a list of the Intents being raised with the key being the name of th
 
 Each Intent raised contains a contextType property which refers to an FDC3 Grid Data Mapping (see above).
 
-It also contains behaviour this is typically either:
+It also contains behaviour using the FDC3 UI Components; this is typically either:
 
 - an FDC3 Action Column Button definition (which is then displayed in the default FDC3 Action Column)
 - a full, bespoke, FDC3 Action Column
@@ -80,58 +80,59 @@ In this demo we raise 3 FDC3 Intents and provide an Action Button definition for
 
 ```
 raises: {
-    // Raise 3 Intents: ViewChart, ViewNews and View Instument
-    // Create an FDC3 Action Button for all 3 which will be put in default FDC3 Action Column
-    ViewChart: [
-      {
-        contextType: 'fdc3.instrument',
-        actionButton: {
-          id: 'viewChartBtn',
-          tooltip: 'Raise: ViewChart',
-          icon: '_defaultFdc3',
-          buttonStyle: {
-            tone: 'info',
-            variant: 'outlined',
-          },
+  // Raise 3 Intents: `ViewChart`, `ViewNews` and `ViewInstument`
+  // Create an FDC3 Action Button for all 3 - each of which will be rendered in default FDC3 Action Column
+  // Note: All 3 Intents use the mapping that was created in `gridDataContextMapping`
+  ViewChart: [
+    {
+      contextType: 'fdc3.instrument',
+      actionButton: {
+        id: 'viewChartBtn',
+        tooltip: 'Raise: ViewChart',
+        icon: '_defaultFdc3',
+        buttonStyle: {
+          tone: 'info',
+          variant: 'outlined',
         },
       },
-    ],
-    ViewNews: [
-      {
-        contextType: 'fdc3.instrument',
-        actionButton: {
-          id: 'viewNewsBtn',
-          tooltip: 'Raise: ViewNews',
-          icon: '_defaultFdc3',
-          buttonStyle: {
-            variant: 'outlined',
-            tone: 'warning',
-          },
+    },
+  ],
+  ViewNews: [
+    {
+      contextType: 'fdc3.instrument',
+      actionButton: {
+        id: 'viewNewsBtn',
+        tooltip: 'Raise: ViewNews',
+        icon: '_defaultFdc3',
+        buttonStyle: {
+          variant: 'outlined',
+          tone: 'warning',
         },
       },
-    ],
-    ViewInstrument: [
-      {
-        contextType: 'fdc3.instrument',
-        actionButton: {
-          id: 'viewInstrumentBtn',
-          tooltip: 'Raise: ViewInstrument',
-          icon: {
-            name: 'visibility-on',
-          },
-          buttonStyle: {
-            tone: 'error',
-            variant: 'outlined',
-          },
+    },
+  ],
+  ViewInstrument: [
+    {
+      contextType: 'fdc3.instrument',
+      actionButton: {
+        id: 'viewInstrumentBtn',
+        tooltip: 'Raise: ViewInstrument',
+        icon: {
+          name: 'visibility-on',
+        },
+        buttonStyle: {
+          tone: 'error',
+          variant: 'outlined',
         },
       },
-    ],
-  },
+    },
+  ],
+},
 ```
 
 #### Listening for Intents
 
-Intents are listened for  using the `listensFor` property (in the `intents` section).
+Intents are listened for using the `listensFor` property (in the `intents` section).
 
 It is typically accompanied by an implementation of the `handleIntent` property which is used to perform the necesary accompanying behaviour.
 
@@ -174,9 +175,46 @@ handleIntent: (handleContext: HandleFdc3Context) => {
 
 AdapTable allows users to Broadcast (and listen to FDC3 Context).
 
-
+> Both are configured using the ```contexts``` property in FDC3 Options.
 
 #### Broadcasting Context
+
+FDC3 Context is broadcast using the `broadcasts` property.
+
+This contains a list of contexts to broadcast together with details of how to broadcast.
+
+> The key is the Context mapping created in FDC3 Grid Data Mappings
+
+There are 3 main ways to broadcast content - each of which uses an AdapTable FDC3 UI Component:
+
+- an FDC3 Action Column Button definition (which is then displayed in the default FDC3 Action Column)
+- a full, bespoke, FDC3 Action Column
+- a Context Menu Item
+
+```
+// Broadcast FDC3 Instrument in 2 ways:
+// using a Context Menu Item in Ticker and Name columns
+// via a FDC3 Action Button (which will be rendered in the default FDC3 Action Column)
+// Note: The Context uses the mapping that was created in `gridDataContextMapping`
+broadcasts: {
+  'fdc3.instrument': {
+    contextMenu: {
+      columnIds: ['Ticker', 'Name'],
+      icon: '_defaultFdc3',
+    },
+    actionButton: {
+      id: 'broadcastInstrumentBtn',
+      icon: { name: 'broadcast' },
+      tooltip: `Broadcast: Instrument`,
+      buttonStyle: {
+        tone: 'success',
+        variant: 'outlined',
+      },
+    },
+  },
+},
+```
+
 
 #### Listening to Context
 
