@@ -3,7 +3,7 @@
 
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
-AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
+AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen for Intents and broadcast and listen for Context.
 
 > The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
@@ -28,7 +28,7 @@ In the app users are able to:
 
 Using FDC3 in AdapTable is a 2-step process:
 
-1.** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
+1. ** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
 2. **Intents** are Raised (and listened for) and **Contexts** are Broadcast (and listened for) using the Mappings created in Stage 1
 
 > AdapTable provides FDC3 UI Components (Action Columns and Context Menus) to make this behaviour easily configurable
@@ -59,7 +59,7 @@ fdc3Options: {
 
 ### FDC3 Intents
 
-AdapTable allows users to both **raise** and **listen to** FDC3 Intents.
+AdapTable allows users to both **raise** and **listen for** FDC3 Intents.
 
 > Both are configured using the ```intents``` property in FDC3 Options.
 
@@ -182,7 +182,7 @@ handleIntent: (handleFDC3Context: HandleFdc3Context) => {
 
 ### FDC3 Context
 
-AdapTable allows users to Broadcast (and listen to FDC3 Context).
+AdapTable allows users to Broadcast (and listen for FDC3 Context).
 
 > Both are configured using the ```contexts``` property in FDC3 Options.
 
