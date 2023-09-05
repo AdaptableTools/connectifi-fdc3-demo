@@ -150,9 +150,12 @@ export const AdaptableAgGrid = () => {
               },
             ],
             custom: {
+              // Raise the Custom `GetPrice` Intent - using a bespoke FDC3 Action Column
+              // When we receive a Price, display it in the column (instead of the button)
               GetPrice: [
                 {
                   contextType: 'fdc3.instrument',
+                  // Provide a bespoke Action Column definition
                   actionColumn: {
                     columnId: 'fdc3GetPriceColumn',
                     friendlyName: 'Get Price',
@@ -189,23 +192,24 @@ export const AdaptableAgGrid = () => {
                       },
                     },
                   },
+                  // Handle the intent resolution by showing the returned Price in the Column
                   handleIntentResolution: async (
-                    params: HandleFdc3IntentResolutionContext,
+                    handleResolutionContext: HandleFdc3IntentResolutionContext,
                   ) => {
                     const intentResult =
-                      await params.intentResolution.getResult();
+                      await handleResolutionContext.intentResolution.getResult();
                     if (!intentResult?.type) {
                       return;
                     }
+                    const adaptableApi: AdaptableApi =
+                      handleResolutionContext.adaptableApi;
                     const contextData = intentResult as Fdc3CustomContext;
                     const ticker = contextData.id?.ticker;
                     const price = contextData.price;
                     if (ticker) {
                       priceMap.set(ticker, price);
                     }
-                    params.adaptableApi.gridApi.refreshColumn(
-                      'fdc3GetPriceColumn',
-                    );
+                    adaptableApi.gridApi.refreshColumn('fdc3GetPriceColumn');
                   },
                 },
               ],
