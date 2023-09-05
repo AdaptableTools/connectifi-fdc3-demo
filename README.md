@@ -43,7 +43,7 @@ Grid Data Mappings provide the “glue” to map AG Grid’s data and columns to
 
 This app has a single Mapping (to the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument)) but there is no limit to how many mappings are allowed:
 
-```ts {1}
+``` 
 fdc3Options: {
   // Create a single Data Mapping - to FDC3 Instrument Context
   // Use `Name` column (defined by '_colId') as the Instrument Name
