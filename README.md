@@ -1,22 +1,21 @@
 
 ## Introduction
 
-Shows AdapTable FDC3 2.0 using [Connectifi](https://www.connectifi.co/) as the desktop agent.
+This demo app illustrates the some AdapTable FDC3 2.0 featues using the [Connectifi Sandbox](https://www.connectifi.co/) as the desktop agent.
 
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
 
 It requires AdapTable Version 16.0.3 and higher.
 
-More to come....
+## The Demo
 
-## Prerequisites
+## The Tech Bits
 
-You'll have to provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
-
+You have to provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
 - VITE_ADAPTABLE_LICENSE_KEY
 - VITE_AG_GRID_LICENSE_KEY
 
-## Install
+### Install
 
 > This project uses [node](http://nodejs.org) and a package manager ([npm](https://npmjs.com), [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)). Go check them out if you don't have them locally installed.
 
@@ -27,7 +26,7 @@ $ npm install
 # pnpm install
 # yarn install
 ```
-## Usage
+### Usage
 
 Let's run!
 
