@@ -28,7 +28,7 @@ In the app users are able to:
 
 Using FDC3 in AdapTable is a 2-step process:
 
-1.** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
+1. ** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
 2. **Intents** are Raised (and listened for) and **Contexts** are Broadcast (and listened for) using the Mappings created in Stage 1
 
 > AdapTable provides FDC3 UI Components (Action Columns and Context Menus) to make this behaviour easily configurable
