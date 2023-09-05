@@ -162,7 +162,7 @@ handleIntent: (handleContext: HandleFdc3Context) => {
   adaptableApi.gridApi.jumpToRow(ticker);
   adaptableApi.gridApi.highlightRow(rowHighlightInfo);
 
-  // Create a `Info` System Status Messae with details of the Intent received
+  // Display an `Info` System Status Message with details of the Intent received
   adaptableApi.systemStatusApi.setInfoSystemStatus(
     'Intent Received: ' + ticker,
     JSON.stringify(handleContext.context),
@@ -191,6 +191,11 @@ There are 3 main ways to broadcast content - each of which uses an AdapTable FDC
 - a full, bespoke, FDC3 Action Column
 - a Context Menu Item
 
+In this app we Broadcast FDC3 Instrument in 2 ways:
+
+- a Context Menu Item in the Name and Ticker columns
+- an FDC3 Action Button
+
 ```
 // Broadcast FDC3 Instrument in 2 ways:
 // using a Context Menu Item in Ticker and Name columns
@@ -215,12 +220,55 @@ broadcasts: {
 },
 ```
 
+#### Listening for Context
 
-#### Listening to Context
+FDC3 Context is listened for using the `listensFor` property (in the `contexts` section).
+
+It is typically accompanied by an implementation of the `handleContext` property which is used to perform the necesary accompanying behaviour.
+
+In this demo we listen for the `ViewInstrument` Intent and we then:
+
+- jump to and highlight the row in yellow for 5 seconds which contains the instrument
+- send a System Status message displaying the Context received:
+
+
+```
+// listen for the `ViewInstrument` Context
+listensFor: ['ViewInstrument'],
+
+// handle the Context received
+handleContext: (eventInfo) => {
+  if (eventInfo.context.type === 'fdc3.instrument') {
+    const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
+    const ticker = eventInfo.context.id?.ticker;
+
+    // Filter the Grid using the received Ticker
+    adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
+      PredicateId: 'Is',
+      PredicateInputs: [eventInfo.context.id?.ticker],
+    });
+
+    // Display a `Success` System Status Message with details of the Context received
+    adaptableApi.systemStatusApi.setSuccessSystemStatus(
+      'Context Received: ' + ticker,
+      JSON.stringify(eventInfo.context),
+    );
+  }
+},
+```
 
 ### Custom FDC3
 
 
+### FDC3 UI Components
+
+```
+        // Make width of Default Action Column Smaller
+        actionColumnDefaultConfiguration: {
+          width: 150,
+        },
+
+```
 
 
 ### Putting It All Together
