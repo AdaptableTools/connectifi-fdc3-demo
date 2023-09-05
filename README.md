@@ -24,11 +24,13 @@ Using FDC3 in AdapTable is a 2-step process:
 1. FDC3 Mappings are defined - essentially creating context using DataGrid fields and columns
 2. Intents are Raised (and listened to) and Contexts are Broadcast (and listened to) using the Mappings created in Stage 1
 
-### Mappings
+> AdapTable provides FDC3 UI Components (Action Columns and Context Menus) to make this behaviour easily configurable
+
+### FDC3 Mappings
 
 Grid Data Mappings provide the “glue” to map AG Grid’s data and columns to required FDC3 behaviour.
 
-AdapTable looks at the mappings to work out which columns to use when creating Intents and Contexts.
+> AdapTable looks at the mappings to work out which columns to use when creating Intents and Contexts.
 
 This app has a single Mapping (to the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument)) but there is no limit to how many mappings are allowed:
 
@@ -46,6 +48,139 @@ fdc3Options: {
   },
 }
 ```
+
+### Intents
+
+AdapTable allows users to both **raise** and **listen to** FDC3 Intents.
+
+> Both are configured using the ```intents``` property in FDC3 Options.
+
+#### Raising Intents
+
+Intents are raised using the ```raises``` property.
+
+It contains a list of the Intents being raised with the key being the name of the Intent (e.g. ```ViewInstrument```).
+
+Each Intent raised contains a contextType property which refers to an FDC3 Grid Data Mapping (see above).
+
+It also contains behaviour this is typically either:
+
+- an FDC3 Action Column Button definition (which is then displayed in the default FDC3 Action Column)
+- a full, bespoke, FDC3 Action Column
+
+> AdapTable provides the `defaultFDC3` property to show default Icons (and tooltips) in the buttons
+
+raises: {
+            ViewChart: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewChartBtn',
+                  tooltip: 'Raise: ViewChart',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    tone: 'info',
+                    variant: 'outlined',
+                  },
+                },
+              },
+            ],
+            ViewNews: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewNewsBtn',
+                  tooltip: 'Raise: ViewNews',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    variant: 'outlined',
+                    tone: 'warning',
+                  },
+                },
+              },
+            ],
+            ViewInstrument: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewInstrumentBtn',
+                  tooltip: 'Raise: ViewInstrument',
+                  icon: {
+                    name: 'visibility-on',
+                  },
+                  buttonStyle: {
+                    tone: 'error',
+                    variant: 'outlined',
+                  },
+                },
+              },
+            ],
+            custom: {
+              GetPrice: [
+                {
+                  contextType: 'fdc3.instrument',
+                  actionColumn: {
+                    columnId: 'fdc3GetPriceColumn',
+                    friendlyName: 'Get Price',
+                    button: {
+                      id: 'GetPriceButton',
+                      label: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !!price ? `$ ${price}` : 'Get Price';
+                      },
+                      icon: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !price
+                          ? {
+                              name: 'quote',
+                            }
+                          : null;
+                      },
+                      tooltip: (button, context) => {
+                        return `Get Price Info for ${context.rowData.Symbol}`;
+                      },
+                      buttonStyle: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol)
+                          ? {
+                              tone: 'success',
+                              variant: 'text',
+                            }
+                          : {
+                              tone: 'info',
+                              variant: 'outlined',
+                            };
+                      },
+                      disabled: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol);
+                      },
+                    },
+                  },
+                  handleIntentResolution: async (
+                    params: HandleFdc3IntentResolutionContext,
+                  ) => {
+                    const intentResult =
+                      await params.intentResolution.getResult();
+                    if (!intentResult?.type) {
+                      return;
+                    }
+                    const contextData = intentResult as Fdc3CustomContext;
+                    const ticker = contextData.id?.ticker;
+                    const price = contextData.price;
+                    if (ticker) {
+                      priceMap.set(ticker, price);
+                    }
+                    // @ts-ignore
+                    params.adaptableApi.gridApi.refreshCells(null, [
+                      'fdc3GetPriceColumn',
+                    ]);
+                  },
+                },
+              ],
+            },
+          },
+
+## Custom FDC3
+
 
 
 
