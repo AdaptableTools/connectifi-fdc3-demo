@@ -57,7 +57,7 @@ AdapTable allows users to both **raise** and **listen to** FDC3 Intents.
 
 #### Raising Intents
 
-Intents are raised using the `raises` property (in `intents` section)
+Intents are raised using the `raises` property (in the `intents` section)
 
 It contains a list of the Intents being raised with the key being the name of the Intent (e.g. ```ViewInstrument```).
 
@@ -127,7 +127,51 @@ raises: {
   },
 ```
 
-## Custom FDC3
+#### Listening for Intents
+
+Intents are listened for  using the `listensFor` property (in the `intents` section).
+
+It is typically accompanied by an implementation of the `handleIntent` property which is used to perform the necesary accompanying behaviour.
+
+In this demo we listen for the `ViewInstrument` Intent and we then:
+
+- jump to and highlight the row in yellow for 5 seconds which contains the instrument
+- send a System Status message displaying the Context received:
+
+```
+listensFor: ['ViewInstrument'],
+handleIntent: (handleContext: HandleFdc3Context) => {
+  const adaptableApi: AdaptableApi = handleContext.adaptableApi;
+  const ticker = handleContext.context.id?.ticker;
+
+  // Create a Row Highlight object and then jump to the row and higlight it
+  const rowHighlightInfo: RowHighlightInfo = {
+    primaryKeyValue: ticker,
+    timeout: 5000,
+    highlightStyle: {
+      BackColor: 'Yellow',
+      ForeColor: 'Black',
+    },
+  };
+  adaptableApi.gridApi.jumpToRow(ticker);
+  adaptableApi.gridApi.highlightRow(rowHighlightInfo);
+
+  // Create a `Info` System Status Messae with details of the Intent received
+  adaptableApi.systemStatusApi.setInfoSystemStatus(
+    'Intent Received: ' + ticker,
+    JSON.stringify(handleContext.context),
+  );
+},
+```
+
+
+### FDC3 Context
+
+#### Broadcasting Context
+
+#### Listening to Context
+
+### Custom FDC3
 
 
 
