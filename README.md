@@ -139,16 +139,16 @@ It is typically accompanied by an implementation of the `handleIntent` property 
 In this demo we listen for the `ViewInstrument` Intent and we then:
 
 - jump to and highlight the row in yellow for 5 seconds which contains the instrument
-- send a System Status message displaying the Context received:
+- send a System Status message displaying the Context received
 
 ```
 // listen for the `ViewInstrument` Intent
 listensFor: ['ViewInstrument'],
 
 // handle the Intent
-handleIntent: (handleContext: HandleFdc3Context) => {
-  const adaptableApi: AdaptableApi = handleContext.adaptableApi;
-  const ticker = handleContext.context.id?.ticker;
+handleIntent: (handleFDC3Context: HandleFdc3Context) => {
+  const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
+  const ticker = handleFDC3Context.context.id?.ticker;
 
   // Create a Row Highlight object and then jump to the row and higlight it
   const rowHighlightInfo: RowHighlightInfo = {
@@ -165,7 +165,7 @@ handleIntent: (handleContext: HandleFdc3Context) => {
   // Display an `Info` System Status Message with details of the Intent received
   adaptableApi.systemStatusApi.setInfoSystemStatus(
     'Intent Received: ' + ticker,
-    JSON.stringify(handleContext.context),
+    JSON.stringify(handleFDC3Context.context),
   );
 },
 ```
@@ -226,32 +226,32 @@ FDC3 Context is listened for using the `listensFor` property (in the `contexts` 
 
 It is typically accompanied by an implementation of the `handleContext` property which is used to perform the necesary accompanying behaviour.
 
-In this demo we listen for the `ViewInstrument` Intent and we then:
+In this demo we listen for the 'fdc3.instrument' Context and we then:
 
-- jump to and highlight the row in yellow for 5 seconds which contains the instrument
-- send a System Status message displaying the Context received:
+- filter the Grid using the Ticker received in the Context
+- send a System Status message displaying the Context received
 
 
 ```
 // listen for the `ViewInstrument` Context
-listensFor: ['ViewInstrument'],
+listensFor: ['fdc3.instrument'],
 
 // handle the Context received
-handleContext: (eventInfo) => {
-  if (eventInfo.context.type === 'fdc3.instrument') {
-    const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-    const ticker = eventInfo.context.id?.ticker;
+handleContext: (handleFDC3Context: HandleFdc3Context) => {
+  if (handleFDC3Context.context.type === 'fdc3.instrument') {
+    const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
+    const ticker = handleFDC3Context.context.id?.ticker;
 
     // Filter the Grid using the received Ticker
     adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
       PredicateId: 'Is',
-      PredicateInputs: [eventInfo.context.id?.ticker],
+      PredicateInputs: [handleFDC3Context.context.id?.ticker],
     });
 
     // Display a `Success` System Status Message with details of the Context received
     adaptableApi.systemStatusApi.setSuccessSystemStatus(
       'Context Received: ' + ticker,
-      JSON.stringify(eventInfo.context),
+      JSON.stringify(handleFDC3Context.context),
     );
   }
 },
@@ -259,202 +259,51 @@ handleContext: (eventInfo) => {
 
 ### Custom FDC3
 
+TO DO
 
 ### FDC3 UI Components
 
-```
-        // Make width of Default Action Column Smaller
-        actionColumnDefaultConfiguration: {
-          width: 150,
-        },
+As can be seen AdapTable provides 2 main FDC3 UI Components:
+
+#### FDC3 Context Menu Items
+
+These leverage the the [AdapTable Context Menu](https://docs.adaptabletools.com/guide/ui-menu-context-menu)).
+
+AdapTable automatically places these menu items in the Context Menu.
+
+#### FDC3 Action Columns and Buttons
+
+These leverage [AdapTable Action Columns](https://docs.adaptabletools.com/guide/handbook-action-column)).
+
+There are 2 ways to define FDC3 actins Buttons:
+
+- Provide a Button definition
+
+When a Button definition is provided, AdapTable will render that button in the default FDC3 Action Column.
+
+These default FDC3 Action column has default configuration properties which can be overriden using the actionColumnDefaultConfiguration property, as we do in this app to make the column narrower:
 
 ```
+// Narrow width of Default Action Column
+actionColumnDefaultConfiguration: {
+  width: 150,
+},
+```
+
+
+- Blah
+
+
+Context Menu items are simply placed 
+
+
 
 
 ### Putting It All Together
 
 ```
-    fdc3Options: {
-        enableLogging: true,
-        gridDataContextMapping: {
-          // Provide a single Instrument Mapping
-          // Use the `Name` column and the `Symbol` field
-          'fdc3.instrument': {
-            name: '_colId.Name',
-            id: {
-              ticker: '_field.Symbol',
-            },
-          },
-        },
-        intents: {
-          raises: {
-            ViewChart: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewChartBtn',
-                  tooltip: 'Raise: ViewChart',
-                  icon: '_defaultFdc3',
-                  buttonStyle: {
-                    tone: 'info',
-                    variant: 'outlined',
-                  },
-                },
-              },
-            ],
-            ViewNews: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewNewsBtn',
-                  tooltip: 'Raise: ViewNews',
-                  icon: '_defaultFdc3',
-                  buttonStyle: {
-                    variant: 'outlined',
-                    tone: 'warning',
-                  },
-                },
-              },
-            ],
-            ViewInstrument: [
-              {
-                contextType: 'fdc3.instrument',
-                actionButton: {
-                  id: 'viewInstrumentBtn',
-                  tooltip: 'Raise: ViewInstrument',
-                  icon: {
-                    name: 'visibility-on',
-                  },
-                  buttonStyle: {
-                    tone: 'error',
-                    variant: 'outlined',
-                  },
-                },
-              },
-            ],
-            custom: {
-              GetPrice: [
-                {
-                  contextType: 'fdc3.instrument',
-                  actionColumn: {
-                    columnId: 'fdc3GetPriceColumn',
-                    friendlyName: 'Get Price',
-                    button: {
-                      id: 'GetPriceButton',
-                      label: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
-                        return !!price ? `$ ${price}` : 'Get Price';
-                      },
-                      icon: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
-                        return !price
-                          ? {
-                              name: 'quote',
-                            }
-                          : null;
-                      },
-                      tooltip: (button, context) => {
-                        return `Get Price Info for ${context.rowData.Symbol}`;
-                      },
-                      buttonStyle: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol)
-                          ? {
-                              tone: 'success',
-                              variant: 'text',
-                            }
-                          : {
-                              tone: 'info',
-                              variant: 'outlined',
-                            };
-                      },
-                      disabled: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol);
-                      },
-                    },
-                  },
-                  handleIntentResolution: async (
-                    params: HandleFdc3IntentResolutionContext,
-                  ) => {
-                    const intentResult =
-                      await params.intentResolution.getResult();
-                    if (!intentResult?.type) {
-                      return;
-                    }
-                    const contextData = intentResult as Fdc3CustomContext;
-                    const ticker = contextData.id?.ticker;
-                    const price = contextData.price;
-                    if (ticker) {
-                      priceMap.set(ticker, price);
-                    }
-                    // @ts-ignore
-                    params.adaptableApi.gridApi.refreshCells(null, [
-                      'fdc3GetPriceColumn',
-                    ]);
-                  },
-                },
-              ],
-            },
-          },
-          listensFor: ['ViewInstrument'],
-          handleIntent: (eventInfo: HandleFdc3Context) => {
-            const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-            const ticker = eventInfo.context.id?.ticker;
-            const upperTicker = ticker.toUpperCase();
-            const rowHighlightInfo: RowHighlightInfo = {
-              primaryKeyValue: upperTicker,
-              timeout: 5000,
-              highlightStyle: {
-                BackColor: 'Yellow',
-                ForeColor: 'Black',
-              },
-            };
-
-            adaptableApi.gridApi.jumpToRow(upperTicker);
-            adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-            adaptableApi.systemStatusApi.setInfoSystemStatus(
-              'Intent Received: ' + upperTicker,
-              JSON.stringify(eventInfo.context),
-            );
-          },
-        },
-        contexts: {
-          broadcasts: {
-            'fdc3.instrument': {
-              contextMenu: {
-                columnIds: ['Ticker', 'Name'],
-                icon: '_defaultFdc3',
-              },
-              actionButton: {
-                id: 'broadcastInstrumentBtn',
-                icon: { name: 'broadcast' },
-                tooltip: `Broadcast: Instrument`,
-                buttonStyle: {
-                  tone: 'success',
-                  variant: 'outlined',
-                },
-              },
-            },
-          },
-          listensFor: ['fdc3.instrument'],
-          handleContext: (eventInfo) => {
-            if (eventInfo.context.type === 'fdc3.instrument') {
-              const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
-              const ticker = eventInfo.context.id?.ticker;
-              adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
-                PredicateId: 'Is',
-                PredicateInputs: [eventInfo.context.id?.ticker],
-              });
-              adaptableApi.systemStatusApi.setSuccessSystemStatus(
-                'Context Received: ' + ticker,
-                JSON.stringify(eventInfo.context),
-              );
-            }
-          },
-        },
-        actionColumnDefaultConfiguration: {
-          width: 150,
-        },
-      },
+   
+    
 ```
 
 ## The Tech Bits
