@@ -1,7 +1,7 @@
 
 ## Introduction
 
-This demo app illustrates the some AdapTable FDC3 2.0 featues using the [Connectifi Sandbox](https://www.connectifi.co/) as the desktop agent.
+This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen to Intents and broadcast and listen to Context.
 
@@ -9,11 +9,11 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 ## The Demo App
 
-The app leverages the Connectifi Sandbox to show how to use the FDC3 capabilities in AdapTable to interop with other applications it widgets.
+The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how to use the FDC3 capabilities in AdapTable to interop with other applications and widgets.
 
-> The data in the app is meaningless **dummy data**; only the Tickers are real.
+> The data in the app is purely meaningless **dummy data** for illustration purposes; only the Tickers are real.
 
-The app primarily uses the Instrument Context to manage intents and broadcasts, but all FDC3 context types are available out of the box in AdapTable.
+The app primarily uses the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument) to manage Intents and Context, but all FDC3 context types are available out of the box in AdapTable.
 
 In the app users are able to:
 
@@ -28,8 +28,8 @@ In the app users are able to:
 
 Using FDC3 in AdapTable is a 2-step process:
 
-1. FDC3 Mappings are defined - essentially creating context using DataGrid fields and columns
-2. Intents are Raised (and listened to) and Contexts are Broadcast (and listened to) using the Mappings created in Stage 1
+1.** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
+2. **Intents** are Raised (and listened for) and **Contexts** are Broadcast (and listened for) using the Mappings created in Stage 1
 
 > AdapTable provides FDC3 UI Components (Action Columns and Context Menus) to make this behaviour easily configurable
 
