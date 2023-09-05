@@ -22,11 +22,222 @@ In the app users are able **
 Using FDC3 in AdapTable is a 2-step process:
 
 1. FDC3 Mappings are defined - essentially creating context using DataGrid fields and columns
-2. Intents are Raised (and listened to) and Contexts are Broadcast (and listened to) using these Mappings.
+2. Intents are Raised (and listened to) and Contexts are Broadcast (and listened to) using the Mappings created in Stage 1
+
+### Mappings
+
+Grid Data Mappings provide the “glue” to map AG Grid’s data and columns to required FDC3 behaviour.
+
+AdapTable looks at the mappings to work out which columns to use when creating Intents and Contexts.
+
+This app has a single Mapping (to the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument)) but there is no limit to how many mappings are allowed:
+
+```
+fdc3Options: {
+  // Provide a single Instrument Mapping
+  // Use the `Name` column and the `Symbol` field
+  gridDataContextMapping: {
+    'fdc3.instrument': {
+      name: '_colId.Name',
+      id: {
+        ticker: '_field.Symbol',
+      },
+    },
+  },
+}
+```
+
+
+
+### Putting It All Together
+
+```
+    fdc3Options: {
+        enableLogging: true,
+        gridDataContextMapping: {
+          // Provide a single Instrument Mapping
+          // Use the `Name` column and the `Symbol` field
+          'fdc3.instrument': {
+            name: '_colId.Name',
+            id: {
+              ticker: '_field.Symbol',
+            },
+          },
+        },
+        intents: {
+          raises: {
+            ViewChart: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewChartBtn',
+                  tooltip: 'Raise: ViewChart',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    tone: 'info',
+                    variant: 'outlined',
+                  },
+                },
+              },
+            ],
+            ViewNews: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewNewsBtn',
+                  tooltip: 'Raise: ViewNews',
+                  icon: '_defaultFdc3',
+                  buttonStyle: {
+                    variant: 'outlined',
+                    tone: 'warning',
+                  },
+                },
+              },
+            ],
+            ViewInstrument: [
+              {
+                contextType: 'fdc3.instrument',
+                actionButton: {
+                  id: 'viewInstrumentBtn',
+                  tooltip: 'Raise: ViewInstrument',
+                  icon: {
+                    name: 'visibility-on',
+                  },
+                  buttonStyle: {
+                    tone: 'error',
+                    variant: 'outlined',
+                  },
+                },
+              },
+            ],
+            custom: {
+              GetPrice: [
+                {
+                  contextType: 'fdc3.instrument',
+                  actionColumn: {
+                    columnId: 'fdc3GetPriceColumn',
+                    friendlyName: 'Get Price',
+                    button: {
+                      id: 'GetPriceButton',
+                      label: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !!price ? `$ ${price}` : 'Get Price';
+                      },
+                      icon: (button, context) => {
+                        const price = priceMap.get(context.rowData.Symbol);
+                        return !price
+                          ? {
+                              name: 'quote',
+                            }
+                          : null;
+                      },
+                      tooltip: (button, context) => {
+                        return `Get Price Info for ${context.rowData.Symbol}`;
+                      },
+                      buttonStyle: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol)
+                          ? {
+                              tone: 'success',
+                              variant: 'text',
+                            }
+                          : {
+                              tone: 'info',
+                              variant: 'outlined',
+                            };
+                      },
+                      disabled: (button, context) => {
+                        return priceMap.has(context.rowData.Symbol);
+                      },
+                    },
+                  },
+                  handleIntentResolution: async (
+                    params: HandleFdc3IntentResolutionContext,
+                  ) => {
+                    const intentResult =
+                      await params.intentResolution.getResult();
+                    if (!intentResult?.type) {
+                      return;
+                    }
+                    const contextData = intentResult as Fdc3CustomContext;
+                    const ticker = contextData.id?.ticker;
+                    const price = contextData.price;
+                    if (ticker) {
+                      priceMap.set(ticker, price);
+                    }
+                    // @ts-ignore
+                    params.adaptableApi.gridApi.refreshCells(null, [
+                      'fdc3GetPriceColumn',
+                    ]);
+                  },
+                },
+              ],
+            },
+          },
+          listensFor: ['ViewInstrument'],
+          handleIntent: (eventInfo: HandleFdc3Context) => {
+            const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
+            const ticker = eventInfo.context.id?.ticker;
+            const upperTicker = ticker.toUpperCase();
+            const rowHighlightInfo: RowHighlightInfo = {
+              primaryKeyValue: upperTicker,
+              timeout: 5000,
+              highlightStyle: {
+                BackColor: 'Yellow',
+                ForeColor: 'Black',
+              },
+            };
+
+            adaptableApi.gridApi.jumpToRow(upperTicker);
+            adaptableApi.gridApi.highlightRow(rowHighlightInfo);
+            adaptableApi.systemStatusApi.setInfoSystemStatus(
+              'Intent Received: ' + upperTicker,
+              JSON.stringify(eventInfo.context),
+            );
+          },
+        },
+        contexts: {
+          broadcasts: {
+            'fdc3.instrument': {
+              contextMenu: {
+                columnIds: ['Ticker', 'Name'],
+                icon: '_defaultFdc3',
+              },
+              actionButton: {
+                id: 'broadcastInstrumentBtn',
+                icon: { name: 'broadcast' },
+                tooltip: `Broadcast: Instrument`,
+                buttonStyle: {
+                  tone: 'success',
+                  variant: 'outlined',
+                },
+              },
+            },
+          },
+          listensFor: ['fdc3.instrument'],
+          handleContext: (eventInfo) => {
+            if (eventInfo.context.type === 'fdc3.instrument') {
+              const adaptableApi: AdaptableApi = eventInfo.adaptableApi;
+              const ticker = eventInfo.context.id?.ticker;
+              adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
+                PredicateId: 'Is',
+                PredicateInputs: [eventInfo.context.id?.ticker],
+              });
+              adaptableApi.systemStatusApi.setSuccessSystemStatus(
+                'Context Received: ' + ticker,
+                JSON.stringify(eventInfo.context),
+              );
+            }
+          },
+        },
+        actionColumnDefaultConfiguration: {
+          width: 150,
+        },
+      },
+```
 
 ## The Tech Bits
 
-You have to provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
+Provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
 - VITE_ADAPTABLE_LICENSE_KEY
 - VITE_AG_GRID_LICENSE_KEY
 
