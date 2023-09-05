@@ -267,13 +267,13 @@ As can be seen AdapTable provides 2 main FDC3 UI Components:
 
 #### FDC3 Context Menu Items
 
-These leverage the the [AdapTable Context Menu](https://docs.adaptabletools.com/guide/ui-menu-context-menu)).
+These leverage the the [AdapTable Context Menu](https://docs.adaptabletools.com/guide/ui-menu-context-menu).
 
 AdapTable automatically places these menu items in the Context Menu.
 
 #### FDC3 Action Columns and Buttons
 
-These leverage [AdapTable Action Columns](https://docs.adaptabletools.com/guide/handbook-action-column)).
+These leverage [AdapTable Action Columns](https://docs.adaptabletools.com/guide/handbook-action-column).
 
 There are 2 ways to define FDC3 actins Buttons:
 
@@ -290,14 +290,79 @@ actionColumnDefaultConfiguration: {
 },
 ```
 
+- Providing a bespoke Action Column Definition
 
-- Blah
+Instead of simply providing buttons, developers can define a full FDC3 Action Column.
 
+This app does that for the Custom `GetPrice` Intent:
 
-Context Menu items are simply placed 
+```
+actionColumn: {
+  columnId: 'fdc3GetPriceColumn',
+  friendlyName: 'Get Price',
+  button: {
+    id: 'GetPriceButton',
+    label: (button, context) => {
+      const price = priceMap.get(context.rowData.Symbol);
+      return !!price ? `$ ${price}` : 'Get Price';
+    },
+    icon: (button, context) => {
+      const price = priceMap.get(context.rowData.Symbol);
+      return !price
+        ? {
+            name: 'quote',
+          }
+        : null;
+    },
+    tooltip: (button, context) => {
+      return `Get Price Info for ${context.rowData.Symbol}`;
+    },
+    buttonStyle: (button, context) => {
+      return priceMap.has(context.rowData.Symbol)
+        ? {
+            tone: 'success',
+            variant: 'text',
+          }
+        : {
+            tone: 'info',
+            variant: 'outlined',
+          };
+    },
+    disabled: (button, context) => {
+      return priceMap.has(context.rowData.Symbol);
+    },
+  },
+},
+```
 
+Both the Default FDC3 Action Column and any bespoke FDC3 Action Columns must be listed in the `columns` property in the [Layout](https://docs.adaptabletools.com/guide/handbook-layouts), as we do in this demo:
 
+```
+Layout: {
+  CurrentLayout: 'Table Layout',
+  Layouts: [
+    Name: 'Table Layout',
+    Columns: [
+      'Ticker',
+      'Name',
+      'Price',
+      'fdc3GetPriceColumn', // Bespoke FDC3 Action Column
+      'Position',
+      'Sector',
+      'SectorPnl',
+      'Performance',
+      'fdc3ActionColumn', // Default FDC3 Action Column
+    ],
+  },
+ ],
+},
+```
 
+### Other AdapTable Objects
+
+The demo contains a few other AdapTable [Predefined Config objects](https://docs.adaptabletools.com/guide/reference-predefined-config) and [Adaptable Options properties](https://docs.adaptabletools.com/guide/reference-options-overview) to create a more pleasing visual effect.   These include:
+
+- 
 
 ### Putting It All Together
 
