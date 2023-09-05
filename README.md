@@ -266,7 +266,81 @@ handleContext: (handleFDC3Context: HandleFdc3Context) => {
 
 ### Custom FDC3
 
-TO DO
+AdapTable also supports Custom FDC3 - for raising and listening for Intents and broadcasting and listening for Contexts.
+
+In this app we raise a Custom `GetPrice` intent
+
+> this integrates with the custom functionality provided by the Connectifi sandbox to illustrate how to use custom FDC3
+
+When raising Custom Intents an implementation for the `handleIntentResolution` property is typically provided (as we do in this app).
+
+```
+custom: {
+  // Raise the Custom `GetPrice` Intent - using a bespoke FDC3 Action Column
+  // When we receive a Price, display it in the column (instead of the button)
+  GetPrice: [
+    {
+      contextType: 'fdc3.instrument',
+      // Provide a bespoke Action Column definition
+      actionColumn: {
+        columnId: 'fdc3GetPriceColumn',
+        friendlyName: 'Get Price',
+        button: {
+          id: 'GetPriceButton',
+          label: (button, context) => {
+            const price = priceMap.get(context.rowData.Symbol);
+            return !!price ? `$ ${price}` : 'Get Price';
+          },
+          icon: (button, context) => {
+            const price = priceMap.get(context.rowData.Symbol);
+            return !price
+              ? {
+                  name: 'quote',
+                }
+              : null;
+          },
+          tooltip: (button, context) => {
+            return `Get Price Info for ${context.rowData.Symbol}`;
+          },
+          buttonStyle: (button, context) => {
+            return priceMap.has(context.rowData.Symbol)
+              ? {
+                  tone: 'success',
+                  variant: 'text',
+                }
+              : {
+                  tone: 'info',
+                  variant: 'outlined',
+                };
+          },
+          disabled: (button, context) => {
+            return priceMap.has(context.rowData.Symbol);
+          },
+        },
+      },
+      // Handle the intent resolution by showing the returned Price in the Column
+      handleIntentResolution: async (
+        handleResolutionContext: HandleFdc3IntentResolutionContext,
+      ) => {
+        const intentResult =
+          await handleResolutionContext.intentResolution.getResult();
+        if (!intentResult?.type) {
+          return;
+        }
+        const adaptableApi: AdaptableApi =
+          handleResolutionContext.adaptableApi;
+        const contextData = intentResult as Fdc3CustomContext;
+        const ticker = contextData.id?.ticker;
+        const price = contextData.price;
+        if (ticker) {
+          priceMap.set(ticker, price);
+        }
+        adaptableApi.gridApi.refreshColumn('fdc3GetPriceColumn');
+      },
+    },
+  ],
+},
+```
 
 ### FDC3 UI Components
 
@@ -367,7 +441,7 @@ Layout: {
 
 ### Other AdapTable Objects
 
-The demo contains a few other AdapTable [Predefined Config objects](https://docs.adaptabletools.com/guide/reference-predefined-config) and [Adaptable Options properties](https://docs.adaptabletools.com/guide/reference-options-overview) to create a more pleasing visual effect.   These include:
+The demo contains a few other AdapTable [Predefined Config objects](https://docs.adaptabletools.com/guide/reference-predefined-config) and [Adaptable Options properties](https://docs.adaptabletools.com/guide/reference-options-overview) to create a more pleasing and realistic visual effect.   These include:
 
 - [Theme](https://docs.adaptabletools.com/guide/handbook-theming) - set app to Dark Theme
 - [Settings Panel](https://docs.adaptabletools.com/guide/ui-settings-panel) - added a Demo Info panel which describes this app
