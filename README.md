@@ -362,24 +362,16 @@ Layout: {
 
 The demo contains a few other AdapTable [Predefined Config objects](https://docs.adaptabletools.com/guide/reference-predefined-config) and [Adaptable Options properties](https://docs.adaptabletools.com/guide/reference-options-overview) to create a more pleasing visual effect.   These include:
 
-- Theme Predefined Config - set app to Dark Theme
-- Dashboard Predefined Config - set the app's Title and provided some buttons
-- Status Bar Predefined Confg - added Layout and Cell Summary panels
-- Format Column Predefined Confg - created various formats and styles including:
-  - bah
-  - blh
-- Calculated Column Predefined Confg - defined a Calculated Column called `Sector Pnl` which aggregates all the Postions, grouped by Sector
-- Layout Predefined Confg - created 2 Layouts - a standard `Table Layout` and a `Sector Layout` with Row Grouping and Aggregations
-- Styled Column Predefined Confg - created xxxx
-  - blah
-  - blah   
-- Menu Options - provided an implementation for `showAdaptableContextMenu` so only one item appears in Ticker Column's context menu
-- Setting Panel Options - added a Demo Info panel which describes this app
-- Dashboard Options - added an Info button which opens the Demo Info panel described above
-
-
-
-
+- [Theme](https://docs.adaptabletools.com/guide/handbook-theming) - set app to Dark Theme
+- [Settings Panel](https://docs.adaptabletools.com/guide/ui-settings-panel) - added a Demo Info panel which describes this app
+- [Dashboard](https://docs.adaptabletools.com/guide/ui-dashboard) - set the app's Title, provided some buttons including custom Info one which opens Demo Info panel described above
+- [Status Bar](https://docs.adaptabletools.com/guide/ui-status-bar) - added Layout and Cell Summary panels
+- [Format Column](https://docs.adaptabletools.com/guide/handbook-column-formatting) - lots of formats provided, particularly on the number columns
+- [Calculated Column](https://docs.adaptabletools.com/guide/handbook-calculated-column) - defined a Calculated Column called `Sector Pnl` which aggregates all the Postions, grouped by Sector
+- [Layout](https://docs.adaptabletools.com/guide/handbook-layouts) - created 2 Layouts - a standard `Table Layout` and a `Sector Layout` with Row Grouping and Aggregations
+- [Badge Style](https://docs.adaptabletools.com/guide/handbook-styled-column-badge) - on the Sector column
+- [Sparkline Style](https://docs.adaptabletools.com/guide/handbook-styled-column-sparkline) - on the Performance column   
+- [Menu Options](https://docs.adaptabletools.com/guide/ui-menu-context-menu) - provided implementation for `showAdaptableContextMenu` so only one item appears in Ticker Column's context menu
 
 ### Putting It All Together
 
