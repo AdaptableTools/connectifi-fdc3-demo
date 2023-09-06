@@ -1,6 +1,6 @@
 <img src="images/fdc3-integrated-pic.png">
 
-## Introduction
+# AdapTable & Connectifi FDC3 2.0 Demo
 
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
