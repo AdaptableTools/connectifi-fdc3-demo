@@ -4,6 +4,8 @@
 
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
+It can be run by going to the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) and clicking on the AdapTable logo.
+
 AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletools.com/guide/handbook-fdc3) including ability to raise and listen for Intents and broadcast and listen for Context.
 
 > The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
