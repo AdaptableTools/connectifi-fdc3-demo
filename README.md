@@ -11,9 +11,9 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 ## The Demo App
 
-The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how to use the FDC3 capabilities in AdapTable to interop with other applications and widgets.
+The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how the FDC3 capabilities in AdapTable can interop with other applications and widgets.
 
-> The data in the app is purely meaningless **dummy data** for illustration purposes; only the Tickers are real.
+> The data in the app is purely meaningless **dummy data** for illustration purposes; only the Tickers are real
 
 The app primarily uses the [FDC3 Instrument Context](https://fdc3.finos.org/docs/context/ref/Instrument) to manage Intents and Context, but all FDC3 context types are available out of the box in AdapTable.
 
@@ -30,7 +30,7 @@ In the app users are able to:
 
 Using FDC3 in AdapTable is a 2-step process:
 
-1. ** FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
+1. **FDC3 Mappings** are defined - essentially creating context using DataGrid fields and columns
 2. **Intents** are Raised (and listened for) and **Contexts** are Broadcast (and listened for) using the Mappings created in Stage 1
 
 > AdapTable provides FDC3 UI Components (Action Columns and Context Menus) to make this behaviour easily configurable
@@ -181,6 +181,7 @@ handleIntent: (handleFDC3Context: HandleFdc3Context) => {
 },
 ```
 
+<img src="images/fdc3-handle-intent.jpeg">
 
 ### FDC3 Context
 
@@ -267,6 +268,9 @@ handleContext: (handleFDC3Context: HandleFdc3Context) => {
   }
 },
 ```
+
+
+<img src="images/fdc3-receive-context.png">
 
 ### Custom FDC3
 
@@ -381,8 +385,6 @@ Instead of simply providing buttons, developers can define a full FDC3 Action Co
 
 This app does that for the Custom `GetPrice` Intent (see the code above)
 
-
-
 Both the Default FDC3 Action Column and any bespoke FDC3 Action Columns must be listed in the `columns` property in the [Layout](https://docs.adaptabletools.com/guide/handbook-layouts), as we do in this demo:
 
 ```
@@ -420,221 +422,6 @@ The demo contains a few other AdapTable [Predefined Config objects](https://docs
 - [Badge Style](https://docs.adaptabletools.com/guide/handbook-styled-column-badge) - on the Sector column
 - [Sparkline Style](https://docs.adaptabletools.com/guide/handbook-styled-column-sparkline) - on the Performance column   
 - [Menu Options](https://docs.adaptabletools.com/guide/ui-menu-context-menu) - provided implementation for `showAdaptableContextMenu` so only one item appears in Ticker Column's context menu
-
-### Putting It All Together
-
-```ts {1}
-fdc3Options: {
-  enableLogging: true,
-  // Create a single Data Mapping - to FDC3 Instrument Context
-  // Use `Name` column (defined by '_colId') as the Instrument Name
-  // Use the `Symbol` field (defined by '_field') to map to Ticker (in `id` prop)
-  gridDataContextMapping: {
-    'fdc3.instrument': {
-      name: '_colId.Name',
-      id: {
-        ticker: '_field.Symbol',
-      },
-    },
-  },
-  intents: {
-    raises: {
-      // Raise 3 Intents: `ViewChart`, `ViewNews` and `ViewInstument`
-      // Create an FDC3 Action Button for all 3 Intents
-      // Each button will be rendered in the default FDC3 Action Column
-      // Note: All 3 Intents use the mapping that was created in `gridDataContextMapping`
-      ViewChart: [
-        {
-          contextType: 'fdc3.instrument',
-          actionButton: {
-            id: 'viewChartBtn',
-            tooltip: 'Raise: ViewChart',
-            icon: '_defaultFdc3',
-            buttonStyle: {
-              tone: 'info',
-              variant: 'outlined',
-            },
-          },
-        },
-      ],
-      ViewNews: [
-        {
-          contextType: 'fdc3.instrument',
-          actionButton: {
-            id: 'viewNewsBtn',
-            tooltip: 'Raise: ViewNews',
-            icon: '_defaultFdc3',
-            buttonStyle: {
-              variant: 'outlined',
-              tone: 'warning',
-            },
-          },
-        },
-      ],
-      ViewInstrument: [
-        {
-          contextType: 'fdc3.instrument',
-          actionButton: {
-            id: 'viewInstrumentBtn',
-            tooltip: 'Raise: ViewInstrument',
-            icon: {
-              name: 'visibility-on',
-            },
-            buttonStyle: {
-              tone: 'error',
-              variant: 'outlined',
-            },
-          },
-        },
-      ],
-      custom: {
-        // Raise the Custom `GetPrice` Intent - using a bespoke FDC3 Action Column
-        // When we receive a Price, display it in the column (instead of the button)
-        GetPrice: [
-          {
-            contextType: 'fdc3.instrument',
-            // Provide a bespoke Action Column definition
-            actionColumn: {
-              columnId: 'fdc3GetPriceColumn',
-              friendlyName: 'Get Price',
-              button: {
-                id: 'GetPriceButton',
-                label: (button, context) => {
-                  const price = priceMap.get(context.rowData.Symbol);
-                  return !!price ? `$ ${price}` : 'Get Price';
-                },
-                icon: (button, context) => {
-                  const price = priceMap.get(context.rowData.Symbol);
-                  return !price
-                    ? {
-                        name: 'quote',
-                      }
-                    : null;
-                },
-                tooltip: (button, context) => {
-                  return `Get Price Info for ${context.rowData.Symbol}`;
-                },
-                buttonStyle: (button, context) => {
-                  return priceMap.has(context.rowData.Symbol)
-                    ? {
-                        tone: 'success',
-                        variant: 'text',
-                      }
-                    : {
-                        tone: 'info',
-                        variant: 'outlined',
-                      };
-                },
-                disabled: (button, context) => {
-                  return priceMap.has(context.rowData.Symbol);
-                },
-              },
-            },
-            // Handle the intent resolution by showing the returned Price in the Column
-            handleIntentResolution: async (
-              handleResolutionContext: HandleFdc3IntentResolutionContext,
-            ) => {
-              const intentResult =
-                await handleResolutionContext.intentResolution.getResult();
-              if (!intentResult?.type) {
-                return;
-              }
-              const adaptableApi: AdaptableApi =
-                handleResolutionContext.adaptableApi;
-              const contextData = intentResult as Fdc3CustomContext;
-              const ticker = contextData.id?.ticker;
-              const price = contextData.price;
-              if (ticker) {
-                priceMap.set(ticker, price);
-              }
-              adaptableApi.gridApi.refreshColumn('fdc3GetPriceColumn');
-            },
-          },
-        ],
-      },
-    },
-
-    // listen for the 'fdc3.instrument' Context
-    listensFor: ['ViewInstrument'],
-
-    // handle the Intent received
-    handleIntent: (handleFDC3Context: HandleFdc3Context) => {
-      const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
-      const ticker = handleFDC3Context.context.id?.ticker;
-      const upperTicker = ticker.toUpperCase();
-
-      // Create a Row Highlight object and then jump to row and highlight it
-      const rowHighlightInfo: RowHighlightInfo = {
-        primaryKeyValue: upperTicker,
-        timeout: 5000,
-        highlightStyle: {
-          BackColor: 'Yellow',
-          ForeColor: 'Black',
-        },
-      };
-      adaptableApi.gridApi.jumpToRow(upperTicker);
-      adaptableApi.gridApi.highlightRow(rowHighlightInfo);
-
-      // Display an `Info` System Status Message with details of the Intent received
-      adaptableApi.systemStatusApi.setInfoSystemStatus(
-        'Intent Received: ' + upperTicker,
-        JSON.stringify(handleFDC3Context.context),
-      );
-    },
-  },
-  contexts: {
-    // Broadcast FDC3 Instrument in 2 ways:
-    // using a Context Menu Item in Ticker and Name columns
-    // via a FDC3 Action Button (which will be rendered in the default FDC3 Action Column)
-    // Note: The Context uses the mapping that was created in `gridDataContextMapping`
-    broadcasts: {
-      'fdc3.instrument': {
-        contextMenu: {
-          columnIds: ['Ticker', 'Name'],
-          icon: '_defaultFdc3',
-        },
-        actionButton: {
-          id: 'broadcastInstrumentBtn',
-          icon: { name: 'broadcast' },
-          tooltip: `Broadcast: Instrument`,
-          buttonStyle: {
-            tone: 'success',
-            variant: 'outlined',
-          },
-        },
-      },
-    },
-
-    // listen for the `ViewInstrument` Context
-    listensFor: ['fdc3.instrument'],
-
-    // handle the Context received
-    handleContext: (handleFDC3Context: HandleFdc3Context) => {
-      if (handleFDC3Context.context.type === 'fdc3.instrument') {
-        const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
-        const ticker = handleFDC3Context.context.id?.ticker;
-
-        // Filter the Grid using the received Ticker
-        adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
-          PredicateId: 'Is',
-          PredicateInputs: [handleFDC3Context.context.id?.ticker],
-        });
-
-        // Display a `Success` System Status Message with details of the Context received
-        adaptableApi.systemStatusApi.setSuccessSystemStatus(
-          'Context Received: ' + ticker,
-          JSON.stringify(handleFDC3Context.context),
-        );
-      }
-    },
-  },
-
-  // Narrow width of Default Action Column
-  actionColumnDefaultConfiguration: {
-    width: 150,
-  },
-},    
-```
 
 
 ## The Tech Bits
