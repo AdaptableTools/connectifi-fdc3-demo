@@ -8,7 +8,7 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 > The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
-See [this YouTube Video](https://youtu.be/aWO1dfhUEQc) for more information
+For more information on this demo app see [AdapTable FDC3 Example](https://docs.adaptabletools.com/guide/handbook-fdc3-example) or [this YouTube Video](https://youtu.be/aWO1dfhUEQc)
 
 ## The Demo App
 
