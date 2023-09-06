@@ -281,7 +281,7 @@ AdapTable also supports Custom FDC3 - for raising and listening for Intents and 
 
 In this app we raise a Custom `GetPrice` intent
 
-> this integrates with the custom functionality provided by the Connectifi sandbox to illustrate how to use custom FDC3
+> this integrates with functionality provided by the Connectifi sandbox to illustrate using custom FDC3
 
 When raising Custom Intents an implementation for the `handleIntentResolution` property is typically provided (as we do in this app).
 
