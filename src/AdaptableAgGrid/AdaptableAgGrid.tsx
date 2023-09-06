@@ -81,13 +81,12 @@ export const AdaptableAgGrid = () => {
 
   const adaptableOptions = useMemo<AdaptableOptions<TickerData>>(
     () => ({
-      licenseKey:
-        'StartDate=2021-10-20|EndDate=2024-01-01|Owner=AdaptableDocs|Type=development|DeveloperCount=1|Ref=AdaptableLicense-application|TS=1634732419321|C=869236154,2499530569,2954009380,2212294583,3235258666,1892324866,3606117680,1143328342',
-
+      licenseKey: import.meta.env.VITE_ADAPTABLE_LICENSE_KEY,
       primaryKey: 'Ticker',
       userName: 'AdaptableUser',
       adaptableId: 'Adaptable Connectifi FDC3 Demo',
       adaptableStateKey: 'adaptable_connectifi_fdc3_demo',
+      // Provide all FDC3 2.0 in FDC3 Options
       fdc3Options: {
         enableLogging: true,
         // Create a single Data Mapping - to FDC3 Instrument Context
@@ -597,10 +596,6 @@ export const AdaptableAgGrid = () => {
                 'fdc3ActionColumn', // Default FDC3 Action Column
                 'Performance',
               ],
-              //  ColumnWidthMap: {
-              //    fdc3GetPriceColumn: 150,
-              //    Ticker: 55,
-              //  },
               AggregationColumns: {
                 Price: 'sum',
                 Position: 'sum',
