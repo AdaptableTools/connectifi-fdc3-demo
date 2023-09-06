@@ -580,8 +580,8 @@ export const AdaptableAgGrid = () => {
                 'Position',
                 'Sector',
                 'SectorPnl',
-                'Performance',
                 'fdc3ActionColumn', // Default FDC3 Action Column
+                'Performance',
               ],
             },
             {
@@ -594,8 +594,8 @@ export const AdaptableAgGrid = () => {
                 'Sector',
                 'Position',
                 'SectorPnl',
-                'Performance',
                 'fdc3ActionColumn', // Default FDC3 Action Column
+                'Performance',
               ],
               //  ColumnWidthMap: {
               //    fdc3GetPriceColumn: 150,
