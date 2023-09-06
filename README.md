@@ -433,13 +433,13 @@ The demo contains a few other AdapTable [Predefined Config objects](https://docs
 
 ## The Tech Bits
 
-> The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
-
 ### License Keys
 
 Provide the AdapTable and AG Grid licenses as environment variables (in `.env` file or in your CI/CD pipeline)
 - VITE_ADAPTABLE_LICENSE_KEY
 - VITE_AG_GRID_LICENSE_KEY
+
+> The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
 ### Installing
 
