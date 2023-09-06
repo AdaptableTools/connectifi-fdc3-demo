@@ -8,6 +8,8 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 > The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
+See [this YouTube Video](https://youtu.be/aWO1dfhUEQc) for more information
+
 ## The Demo App
 
 The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how the FDC3 capabilities in AdapTable can interop with other applications and widgets.
