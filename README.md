@@ -23,7 +23,7 @@ In the app users are able to:
 - Raise FDC3 Intents
 - Listen for FDC3 Intents
 - Broadcast FDC3 Context
-- Listen for FDC3 Intetns
+- Listen for FDC3 Context
 - Raise a Custom FDC3 Intent
 - Define FDC3 Action Buttons, Action Columns and Context Menu Items
 
