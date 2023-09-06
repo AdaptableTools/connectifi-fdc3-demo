@@ -217,10 +217,10 @@ export const AdaptableAgGrid = () => {
             },
           },
 
-          // listen for the 'fdc3.instrument' Context
+          // listen for the ViewInstrument Intent
           listensFor: ['ViewInstrument'],
 
-          // handle the Intent received
+          // handle the Intents received
           handleIntent: (handleFDC3Context: HandleFdc3Context) => {
             const adaptableApi: AdaptableApi = handleFDC3Context.adaptableApi;
             const ticker = handleFDC3Context.context.id?.ticker;
@@ -268,7 +268,7 @@ export const AdaptableAgGrid = () => {
             },
           },
 
-          // listen for the `ViewInstrument` Context
+          // listen for the 'fdc3.instrument' Context
           listensFor: ['fdc3.instrument'],
 
           // handle the Context received
