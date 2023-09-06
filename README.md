@@ -1,7 +1,7 @@
 
 ## Introduction
 
-<img src="images/fdc3-app-demo.jpeg">
+<img src="images/fdc3-integrated-pic.png">
 
 This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
@@ -141,6 +141,8 @@ raises: {
 },
 ```
 
+<img src="images/fdc3-app-demo.jpeg">
+
 #### Listening for Intents
 
 Intents are listened for using the `listensFor` property (in the `intents` section).
@@ -231,6 +233,8 @@ broadcasts: {
   },
 },
 ```
+<img src="images/fdc3-broadcast-instrument-menu.jpeg">
+
 
 #### Listening for Context
 
