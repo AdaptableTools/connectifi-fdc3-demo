@@ -181,6 +181,7 @@ handleIntent: (handleFDC3Context: HandleFdc3Context) => {
 },
 ```
 
+<img src="images/fdc3-handle-intent.jpeg">
 
 ### FDC3 Context
 
@@ -267,6 +268,9 @@ handleContext: (handleFDC3Context: HandleFdc3Context) => {
   }
 },
 ```
+
+
+<img src="images/fdc3-receive-context.png">
 
 ### Custom FDC3
 
