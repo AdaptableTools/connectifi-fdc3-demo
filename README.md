@@ -355,6 +355,8 @@ custom: {
 },
 ```
 
+<img src="images/fdc3-get-price-custom-context.png">
+
 ### FDC3 UI Components
 
 As can be seen AdapTable provides 2 main FDC3 UI Components:
