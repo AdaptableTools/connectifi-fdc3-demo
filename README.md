@@ -8,6 +8,8 @@ AdapTable provides comprehensive [FDC3 functionality](https://docs.adaptabletool
 
 > The app requires AdapTable Version 16.0.3 and higher (and AG Grid 30.0 and higher)
 
+For more information on this demo app see [AdapTable FDC3 Example](https://docs.adaptabletools.com/guide/handbook-fdc3-example) or [this YouTube Video](https://youtu.be/aWO1dfhUEQc)
+
 ## The Demo App
 
 The app leverages the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) to show how the FDC3 capabilities in AdapTable can interop with other applications and widgets.
@@ -21,7 +23,7 @@ In the app users are able to:
 - Raise FDC3 Intents
 - Listen for FDC3 Intents
 - Broadcast FDC3 Context
-- Listen for FDC3 Intetns
+- Listen for FDC3 Context
 - Raise a Custom FDC3 Intent
 - Define FDC3 Action Buttons, Action Columns and Context Menu Items
 
@@ -281,7 +283,7 @@ AdapTable also supports Custom FDC3 - for raising and listening for Intents and 
 
 In this app we raise a Custom `GetPrice` intent
 
-> this integrates with the custom functionality provided by the Connectifi sandbox to illustrate how to use custom FDC3
+> this integrates with functionality provided by the Connectifi sandbox to illustrate using custom FDC3
 
 When raising Custom Intents an implementation for the `handleIntentResolution` property is typically provided (as we do in this app).
 
