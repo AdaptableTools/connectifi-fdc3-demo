@@ -322,7 +322,7 @@ export const AdaptableAgGrid = () => {
       },
       settingsPanelOptions: {
         icon: 'ApplicationIcon',
-        title: 'AdapTable - Connectifi FDC3 Demo',
+        title: 'AdapTable - OpenFin FDC3 Demo',
         navigation: {
           items: [
             'Demo Info',
@@ -369,7 +369,7 @@ export const AdaptableAgGrid = () => {
         },
         Dashboard: {
           Revision,
-          DashboardTitle: 'AdapTable - Connectifi',
+          DashboardTitle: 'AdapTable - OpenFin POC',
           Tabs: [
             {
               Name: 'FDC3 Demo',
