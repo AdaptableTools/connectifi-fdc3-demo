@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import {
   GetContextMenuItemsParams,
@@ -20,7 +20,6 @@ import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData } from './rowData';
 import { TickerData } from './TickerData';
 import { agGridModules } from './agGridModules';
-import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 import {
   AdaptableMenuItem,
@@ -35,20 +34,6 @@ const priceMap: Map<string, number> = new Map<string, number>();
 const Revision = 7;
 
 export const AdaptableAgGrid = () => {
-  const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
-
-  useEffect(() => {
-    if ((globalThis as any).fdc3 == null) {
-      createAgent('https://dev.connectifi-interop.com', 'adaptable@sandbox', {
-        logLevel: 'debug',
-      }).then((agent) => {
-        (globalThis as any).fdc3 = agent as ConnectifiDesktopAgent;
-        document.dispatchEvent(new CustomEvent('fdc3Ready', {}));
-        setFdc3Initialised(true);
-      });
-    }
-  }, []);
-
   const gridOptions = useMemo<GridOptions<TickerData>>(
     () => ({
       defaultColDef,
@@ -761,41 +746,34 @@ export const AdaptableAgGrid = () => {
 
   return (
     <div className={'flex h-screen flex-col'}>
-      {!fdc3Initialised ? (
-        <div>Initialising FDC3...</div>
-      ) : (
-        <>
-          {' '}
-          <AdaptableReact
-            className={'flex-none'}
-            gridOptions={gridOptions}
-            adaptableOptions={adaptableOptions}
-            renderReactRoot={(node, container) => {
-              let root = renderWeakMap.get(container);
-              if (!root) {
-                renderWeakMap.set(container, (root = createRoot(container)));
-              }
-              root.render(node);
-              return () => {
-                root?.unmount();
-              };
-            }}
-            onAdaptableReady={(readyInfo: AdaptableReadyInfo) => {
-              // save a reference to adaptable api
-              adaptableApiRef.current = readyInfo.adaptableApi;
+      <AdaptableReact
+        className={'flex-none'}
+        gridOptions={gridOptions}
+        adaptableOptions={adaptableOptions}
+        renderReactRoot={(node, container) => {
+          let root = renderWeakMap.get(container);
+          if (!root) {
+            renderWeakMap.set(container, (root = createRoot(container)));
+          }
+          root.render(node);
+          return () => {
+            root?.unmount();
+          };
+        }}
+        onAdaptableReady={(readyInfo: AdaptableReadyInfo) => {
+          // save a reference to adaptable api
+          adaptableApiRef.current = readyInfo.adaptableApi;
 
-              (window as any).api = readyInfo.adaptableApi;
+          (window as any).api = readyInfo.adaptableApi;
 
-              setTimeout(() => {
-                //   readyInfo.gridOptions.columnApi?.autoSizeAllColumns();
-              }, 200);
-            }}
-          />
-          <div className="ag-theme-balham flex-1">
-            <AgGridReact gridOptions={gridOptions} modules={agGridModules} />
-          </div>
-        </>
-      )}
+          setTimeout(() => {
+            //   readyInfo.gridOptions.columnApi?.autoSizeAllColumns();
+          }, 200);
+        }}
+      />
+      <div className="ag-theme-balham flex-1">
+        <AgGridReact gridOptions={gridOptions} modules={agGridModules} />
+      </div>
     </div>
   );
 };

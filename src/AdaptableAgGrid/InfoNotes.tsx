@@ -5,21 +5,13 @@ export const InfoNotes = () => {
     <div className={'h-full overflow-auto'}>
       {' '}
       <p>
-        <b>AdapTable & Connectifi FDC3 Demo Application</b>
+        <b>AdapTable FDC3 Demo Application</b>
       </p>
       <br />
       <div className={'text-sm'}>
         <p>
           <i>
             (See{' '}
-            <a
-              className={'text-sky-400 underline'}
-              href="https://github.com/AdaptableTools/connectifi-fdc3-demo"
-              target="_new"
-            >
-              the demo code and 'Read Me'
-            </a>{' '}
-            or learn about{' '}
             <a
               className={'text-sky-400 underline'}
               href="https://docs.adaptabletools.com/guide/handbook-fdc3"
@@ -30,11 +22,6 @@ export const InfoNotes = () => {
           </i>
           )
         </p>{' '}
-        <br />{' '}
-        <p>
-          This app leverages the Connectifi sandbox (using meaningless dummy
-          data) to illustrate some of AdapTable's FDC3 features, including:
-        </p>
         <br />
         <p className={'text-green-400'}>
           Raising FDC3 Intents (using buttons in the "FDC3 Actions" column)
