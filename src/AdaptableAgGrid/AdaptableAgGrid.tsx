@@ -20,7 +20,7 @@ import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData } from './rowData';
 import { TickerData } from './TickerData';
 import { agGridModules } from './agGridModules';
-import { ConnectifiDesktopAgent, createAgent } from '@connectifi/agent-web';
+import { createAgent } from '@connectifi/agent-web';
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 import {
   AdaptableMenuItem,
@@ -42,7 +42,7 @@ export const AdaptableAgGrid = () => {
       createAgent('https://dev.connectifi-interop.com', 'adaptable@sandbox', {
         logLevel: 'debug',
       }).then((agent) => {
-        (globalThis as any).fdc3 = agent as ConnectifiDesktopAgent;
+        (globalThis as any).fdc3 = agent;
         document.dispatchEvent(new CustomEvent('fdc3Ready', {}));
         setFdc3Initialised(true);
       });

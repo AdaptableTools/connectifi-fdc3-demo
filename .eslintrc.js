@@ -24,6 +24,10 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:prettier/recommended',
   ],
+  rules: {
+    'react/no-unescaped-entities': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+  },
   globals: {
     React: 'readonly',
   },
