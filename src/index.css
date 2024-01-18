@@ -1,6 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @import '@ag-grid-community/styles/ag-grid.css';
 @import '@ag-grid-community/styles/ag-theme-alpine.css';
@@ -10,14 +10,13 @@
 @import '@adaptabletools/adaptable-react-aggrid/themes/dark.css';
 
 :root {
-    --ab__font-family: Helvetica;
+  --ab__font-family: Helvetica;
 }
 
 body {
-    font-family: var(--ab__font-family);
+  font-family: var(--ab__font-family);
 }
 
 svg {
-    display: inline;
+  display: inline;
 }
-

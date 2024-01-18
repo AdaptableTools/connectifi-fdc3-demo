@@ -20,7 +20,7 @@ import { columnDefs, defaultColDef } from './columnDefs';
 import { rowData } from './rowData';
 import { TickerData } from './TickerData';
 import { agGridModules } from './agGridModules';
-import { createAgent } from '@connectifi/agent-web';
+
 import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 import {
   AdaptableMenuItem,
@@ -28,25 +28,24 @@ import {
 } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Menu';
 import { InfoNotes } from './InfoNotes';
 
-const renderWeakMap: WeakMap<HTMLElement, Root> = new WeakMap();
-
 const priceMap: Map<string, number> = new Map<string, number>();
 
-const Revision = 7;
+const Revision = 8;
 
 export const AdaptableAgGrid = () => {
   const [fdc3Initialised, setFdc3Initialised] = useState<boolean>(false);
 
   useEffect(() => {
-    if ((globalThis as any).fdc3 == null) {
-      createAgent('https://dev.connectifi-interop.com', 'adaptable@sandbox', {
-        logLevel: 'debug',
-      }).then((agent) => {
-        (globalThis as any).fdc3 = agent;
-        document.dispatchEvent(new CustomEvent('fdc3Ready', {}));
-        setFdc3Initialised(true);
-      });
-    }
+    const handleFdc3Ready = () => {
+      setFdc3Initialised(true);
+    };
+
+    // check index.html for the fdc3Ready event
+    document.addEventListener('fdc3Ready', handleFdc3Ready);
+
+    return () => {
+      document.removeEventListener('fdc3Ready', handleFdc3Ready);
+    };
   }, []);
 
   const gridOptions = useMemo<GridOptions<TickerData>>(
@@ -278,7 +277,7 @@ export const AdaptableAgGrid = () => {
               const ticker = handleFDC3Context.context.id?.ticker;
 
               // Filter the Grid using the received Ticker
-              adaptableApi.filterApi.setColumnFilterForColumn('Ticker', {
+              adaptableApi.columnFilterApi.setColumnFilterForColumn('Ticker', {
                 PredicateId: 'Is',
                 PredicateInputs: [handleFDC3Context.context.id?.ticker],
               });
@@ -770,16 +769,6 @@ export const AdaptableAgGrid = () => {
             className={'flex-none'}
             gridOptions={gridOptions}
             adaptableOptions={adaptableOptions}
-            renderReactRoot={(node, container) => {
-              let root = renderWeakMap.get(container);
-              if (!root) {
-                renderWeakMap.set(container, (root = createRoot(container)));
-              }
-              root.render(node);
-              return () => {
-                root?.unmount();
-              };
-            }}
             onAdaptableReady={(readyInfo: AdaptableReadyInfo) => {
               // save a reference to adaptable api
               adaptableApiRef.current = readyInfo.adaptableApi;
