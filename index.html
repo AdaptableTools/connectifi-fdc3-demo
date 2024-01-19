@@ -5,17 +5,7 @@
     <link rel="icon" type="image/x-icon" href="/src/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdapTable - Connectifi</title>
-    <script type="module" >
-      import { createAgent } from "https://dev.connectifi-interop.com/agent/main.bundle.js";
-
-      createAgent('https://dev.connectifi-interop.com', 'adaptable@sandbox', {
-        logLevel: 'debug',
-      }).then((fdc3) => {
-        window.fdc3 = fdc3;
-        document.dispatchEvent(new CustomEvent('fdc3Ready', {}));
-      });
-
-    </script>
+    <script type="module" src="/src/createAgent.js"></script>
   </head>
   <body>
     <div id="root"></div>
