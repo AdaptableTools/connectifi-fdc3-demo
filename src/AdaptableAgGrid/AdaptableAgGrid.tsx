@@ -27,6 +27,7 @@ import {
   ContextMenuContext,
 } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Menu';
 import { InfoNotes } from './InfoNotes';
+import { WaitingPage } from './WaitingPage';
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
@@ -761,7 +762,7 @@ export const AdaptableAgGrid = () => {
   return (
     <div className={'flex h-screen flex-col'}>
       {!fdc3Initialised ? (
-        <div>Initialising FDC3...</div>
+        <WaitingPage />
       ) : (
         <>
           {' '}
