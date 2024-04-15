@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { createRoot, Root } from 'react-dom/client';
 import {
   GetContextMenuItemsParams,
   GridOptions,
 } from '@ag-grid-community/core';
-import { AgGridReact } from '@ag-grid-community/react';
-import AdaptableReact, {
+import {
+  Adaptable,
   AdaptableApi,
   AdaptableButton,
   AdaptableOptions,
@@ -300,7 +299,21 @@ export const AdaptableAgGrid = () => {
       layoutOptions: {
         autoSizeColumnsInLayout: true,
       },
-      menuOptions: {
+      contextMenuOptions: {
+        customContextMenu: ({
+          adaptableColumn,
+          defaultAdaptableMenuStructure,
+        }) => {
+          if (adaptableColumn.columnId !== 'Ticker') {
+            return defaultAdaptableMenuStructure.filter(
+              (item) => item === '-' || item.module !== 'Fdc3',
+            );
+          }
+          const fdc3Structure = defaultAdaptableMenuStructure.filter(
+            (item) => item !== '-' && item.module === 'Fdc3',
+          );
+          return fdc3Structure;
+        },
         showAdaptableContextMenu: (
           menuItem: AdaptableMenuItem,
           menuContext: ContextMenuContext<TickerData>,
@@ -418,7 +431,6 @@ export const AdaptableAgGrid = () => {
               Style: {
                 FontWeight: 'Bold',
               },
-              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -443,7 +455,6 @@ export const AdaptableAgGrid = () => {
               Style: {
                 FontWeight: 'Bold',
               },
-              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -465,7 +476,6 @@ export const AdaptableAgGrid = () => {
                   FractionDigits: 2,
                 },
               },
-              IncludeGroupedRows: true,
             },
 
             {
@@ -488,7 +498,6 @@ export const AdaptableAgGrid = () => {
                   FractionDigits: 2,
                 },
               },
-              IncludeGroupedRows: true,
             },
             {
               Scope: {
@@ -537,7 +546,6 @@ export const AdaptableAgGrid = () => {
                 },
               },
               CellAlignment: 'Right',
-              IncludeGroupedRows: true,
             },
           ],
         },
@@ -766,24 +774,24 @@ export const AdaptableAgGrid = () => {
       ) : (
         <>
           {' '}
-          <AdaptableReact
-            className={'flex-none'}
+          <Adaptable.Provider
             gridOptions={gridOptions}
             adaptableOptions={adaptableOptions}
+            modules={[...agGridModules]}
             onAdaptableReady={(readyInfo: AdaptableReadyInfo) => {
               // save a reference to adaptable api
               adaptableApiRef.current = readyInfo.adaptableApi;
 
               (window as any).api = readyInfo.adaptableApi;
-
-              setTimeout(() => {
-                //   readyInfo.gridOptions.columnApi?.autoSizeAllColumns();
-              }, 200);
             }}
-          />
-          <div className="ag-theme-balham flex-1">
-            <AgGridReact gridOptions={gridOptions} modules={agGridModules} />
-          </div>
+          >
+            <div
+              style={{ display: 'flex', flexFlow: 'column', height: '100vh' }}
+            >
+              <Adaptable.UI style={{ flex: 'none' }} />
+              <Adaptable.AgGridReact className="ag-theme-balham" />
+            </div>
+          </Adaptable.Provider>
         </>
       )}
     </div>
