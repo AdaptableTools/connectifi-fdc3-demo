@@ -9,7 +9,7 @@
     "format": "prettier --write \"*/**/*.html\""
   },
   "dependencies": {
-    "@adaptabletools/adaptable-react-aggrid": "18.0.0",
+    "@adaptabletools/adaptable-react-aggrid": "18.0.9",
     "@ag-grid-community/client-side-row-model": "31.1.0",
     "@ag-grid-community/core": "31.1.0",
     "@ag-grid-community/react": "31.1.0",
