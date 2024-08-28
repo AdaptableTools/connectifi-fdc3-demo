@@ -20,13 +20,13 @@ import { rowData } from './rowData';
 import { TickerData } from './TickerData';
 import { agGridModules } from './agGridModules';
 
-import { Fdc3CustomContext } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Fdc3Context';
 import {
   AdaptableMenuItem,
   ContextMenuContext,
 } from '@adaptabletools/adaptable/src/PredefinedConfig/Common/Menu';
 import { InfoNotes } from './InfoNotes';
 import { WaitingPage } from './WaitingPage';
+import { Context } from '@finos/fdc3';
 
 const priceMap: Map<string, number> = new Map<string, number>();
 
@@ -203,7 +203,7 @@ export const AdaptableAgGrid = () => {
                     }
                     const adaptableApi: AdaptableApi =
                       handleResolutionContext.adaptableApi;
-                    const contextData = intentResult as Fdc3CustomContext;
+                    const contextData = intentResult as Context;
                     const ticker = contextData.id?.ticker;
                     const price = contextData.price;
                     if (ticker) {
@@ -789,7 +789,7 @@ export const AdaptableAgGrid = () => {
               style={{ display: 'flex', flexFlow: 'column', height: '100vh' }}
             >
               <Adaptable.UI style={{ flex: 'none' }} />
-              <Adaptable.AgGridReact className="ag-theme-balham" />
+              <Adaptable.AgGridReact className="ag-theme-quartz" />
             </div>
           </Adaptable.Provider>
         </>

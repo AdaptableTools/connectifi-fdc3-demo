@@ -2,7 +2,7 @@
 
 # AdapTable & Connectifi FDC3 2.0 Demo
 
-This demo app illustrates some AdapTable FDC3 2.0 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
+This demo app illustrates some AdapTable FDC3 2.1 features using [Connectifi](https://www.connectifi.co/) as the desktop agent.
 
 > The app is publicly available - go to the [Connectifi Sandbox](https://apps.connectifi-interop.com/sandbox) and click on the AdapTable logo
 
