@@ -162,11 +162,11 @@ export const AdaptableAgGrid = () => {
                     button: {
                       id: 'GetPriceButton',
                       label: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
+                        const price = priceMap.get(context.rowData?.Symbol);
                         return !!price ? `$ ${price}` : 'Get Price';
                       },
                       icon: (button, context) => {
-                        const price = priceMap.get(context.rowData.Symbol);
+                        const price = priceMap.get(context.rowData?.Symbol);
                         return !price
                           ? {
                               name: 'quote',
@@ -174,10 +174,10 @@ export const AdaptableAgGrid = () => {
                           : null;
                       },
                       tooltip: (button, context) => {
-                        return `Get Price Info for ${context.rowData.Symbol}`;
+                        return `Get Price Info for ${context.rowData?.Symbol}`;
                       },
                       buttonStyle: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol)
+                        return priceMap.has(context.rowData?.Symbol)
                           ? {
                               tone: 'success',
                               variant: 'text',
@@ -188,7 +188,7 @@ export const AdaptableAgGrid = () => {
                             };
                       },
                       disabled: (button, context) => {
-                        return priceMap.has(context.rowData.Symbol);
+                        return priceMap.has(context.rowData?.Symbol);
                       },
                     },
                   },
@@ -789,7 +789,7 @@ export const AdaptableAgGrid = () => {
               style={{ display: 'flex', flexFlow: 'column', height: '100vh' }}
             >
               <Adaptable.UI style={{ flex: 'none' }} />
-              <Adaptable.AgGridReact className="ag-theme-quartz" />
+              <Adaptable.AgGridReact className="ag-theme-balham" />
             </div>
           </Adaptable.Provider>
         </>
